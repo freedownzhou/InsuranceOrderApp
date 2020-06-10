@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+		<meta charset="UTF-8">
+		<title>跳转中</title>
+		<!-- <link rel="stylesheet" type="text/css" href="http://cdn.fuaotec.com/ydb/public/css/cube.min.css" />
+		<script type="text/javascript" src="http://cdn.fuaotec.com/ydb/public/js/vue.min.js" charset="utf-8"></script>
+		<script type="text/javascript" src="http://cdn.fuaotec.com/ydb/public/js/jquery.min.js" charset="utf-8"></script>
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" charset="utf-8"></script>
+		<script type="text/javascript" src="http://cdn.fuaotec.com/ydb/public/js/axios.min.js" charset="utf-8"></script>
+		<script type="text/javascript" src="http://cdn.fuaotec.com/ydb/public/js/cube.min.js" charset="utf-8"></script>
+		<script type="text/javascript" src="http://cdn.fuaotec.com/ydb/public/js/qs.min.js" charset="utf-8"></script>
+		<script type="text/javascript" src="http://cdn.fuaotec.com/ydb/public/js/layer_mobile/layer.js" charset="utf-8"></script>
+		<script type="text/javascript" src="http://cdn.fuaotec.com/ydb/public/js/vconsole.min.js" charset="utf-8"></script> -->
+		<script type="text/javascript" src="js/main.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+		
+	</head>
+
+	<body>
+		<div id="app" v-cloak class="none ">
+		</div>
+		跳转中
+	</body>
+	<script>
+		new Vue({
+			el: '#app',
+			data() {
+				return {
+					model: {
+						data: {},
+						redirect: ''
+					}
+				}
+			},
+			methods: {
+				main: function() {
+					var _vue = this;
+					var toast = _vue.$createToast({
+						txt: 'Loading...',
+						time: 0,
+					})
+					toast.show();
+					this.getUser(toast);
+				},
+				getUser: function (toast) {
+					var _vue = this;
+					var openid = _bao_h5_tools.url_param('openid');
+					_bao_h5_common.session.set('openid', openid);
+					var user = _bao_h5_common.getUser();
+					console.log(user);
+					
+					var redirect = _bao_h5_tools.url_param('redirect');
+					redirect = redirect.replace("wechat","wx");
+					_vue.redirect = redirect;
+					//_bao_h5_common.openHref(redirect);
+					console.log(redirect);
+					
+				},
+				bindingBroker: function (data) {
+					this.$createDialog({
+						type: 'confirm',
+						icon: 'cubeic-question',
+						title: '是否绑定成为此经销商下的经纪人',
+						confirmBtn: {
+						  text: '绑定',
+						  active: true,
+						  disabled: false,
+						  href: 'javascript:;'
+						},
+						cancelBtn: {
+						  text: '取消',
+						  active: false,
+						  disabled: false,
+						  href: 'javascript:;'
+						},
+						onConfirm: () => {
+							var toast = this.$createToast({
+								txt: '请求加载中···',
+								time: 0,
+								mask: true
+							});
+							toast.show()
+							var redirect = this.redirect;
+							if (!redirect) {
+								redirect = _bao_h5_tools.url_param('redirect');
+								redirect = redirect.replace("wechat","wx")
+							}
+							_bao_h5_common.post("wx/user/v1/bindingBroker", data, function(res) {
+								if (res.code != 0) {
+									toast.hide();
+								    _bao_h5_common.toast('绑定经销商失败，即将跳转···');
+									if (redirect) {
+										_bao_h5_common.openHref(redirect, 2000);
+									}
+								    return;
+								}
+								_bao_h5_common.toast('绑定经销商成功，即将跳转···');
+								if (redirect) {
+									_bao_h5_common.openHref(redirect, 2000);
+								}
+							},true);
+						},
+						onCancel: () => {
+							var redirect = this.redirect;
+							if (!redirect) {
+								redirect = _bao_h5_tools.url_param('redirect');
+								redirect = redirect.replace("wechat","wx")
+							}
+							if (redirect) {
+								_bao_h5_common.openHref(redirect);
+							}
+						}
+					}).show();
+				}
+			},
+			mounted() {
+				
+				this.main();
+			}
+		});
+	</script>
+</html>

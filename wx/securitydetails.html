@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+		<meta charset="UTF-8">
+		<title>保障详情</title>
+		<script type="text/javascript" src="../js/main.js"></script>
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/flex.css"/>
+		<link rel="stylesheet" type="text/css" href="http://cdn.zljan.com/insurance/mobile/base/css/cube.css" />
+		<link rel="stylesheet" href="../css/global.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<script type="text/javascript" src="../js/common.js"></script>
+		<!--<script type="text/javascript" src="../js/wlogin_v20190614.js"></script>-->
+	</head>
+	<body>
+		<div  id="app" class='order_ym security'>			
+			<!--warp-->
+			<div class="order_one">
+			<ul class="order_oneul tbc-lr-scatter">
+				<li @click="changePage(1)" :class="[now_date == agate? 'tab_active': '']">玛瑙计划</li>
+				<li @click="changePage(2)"  :class="[now_date == pearl? 'tab_active': '']">珍珠计划</li>
+				<li @click="changePage(3)"  :class="[now_date == diamond? 'tab_active': '']">钻石计划</li>
+			</ul>
+			</div>
+			<div class="tab_box">
+				<!--玛瑙计划-->
+				<div class="tab_socall" v-if="now_date == agate">
+					<div class="all_xhbox" v-for="(item,index) in datas_1" :key='index' @click="jump_content(index,item)">
+			            		<p style="width: 100%;height: 0.1rem;background: #F4F7FC;"></p>
+			            			
+			            			<p class="center-lr-scatter xunh_title"><span class="font_bold color_txt_101010"><i class="iconfont color_txt_67C23A fs20">&#xe697;</i>&nbsp;{{item.title}}</span><span class="color_txt_f44">{{item.money}}</span></p>
+			            			<div>
+			            				<p class="plan_xunh_content">{{item.content}}</p>
+			            			</div>
+			            		</div>
+
+				</div>
+				<!--珍珠计划-->
+				<div class="tab_socall" v-if="now_date == pearl">
+					<div class="all_xhbox" v-for="(item,index) in datas_2" :key='index' @click="jump_content(index,item)">
+			            		<p style="width: 100%;height: 0.1rem;background: #F4F7FC;"></p>
+			            			
+			            			<p class="center-lr-scatter xunh_title"><span class="font_bold color_txt_101010"><i class="iconfont color_txt_67C23A fs20">&#xe697;</i>&nbsp;{{item.title}}</span><span class="color_txt_f44">{{item.money}}</span></p>
+			            			<div>
+			            				<p class="plan_xunh_content">{{item.content}}</p>
+			            			</div>
+			            		</div>
+
+				</div>
+				<!--钻石计划-->
+				<div class="tab_socall" v-if="now_date == diamond">
+					<div class="all_xhbox" v-for="(item,index) in datas_3" :key='index' @click="jump_content(index,item)">
+			            		<p style="width: 100%;height: 0.1rem;background: #F4F7FC;"></p>
+			            			
+			            			<p class="center-lr-scatter xunh_title"><span class="font_bold color_txt_101010"><i class="iconfont color_txt_67C23A fs20">&#xe697;</i>&nbsp;{{item.title}}</span><span class="color_txt_f44">{{item.money}}</span></p>
+			            			<div>
+			            				<p class="plan_xunh_content">{{item.content}}</p>
+			            			</div>
+			            	</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			Vue.filter('addZero',function(value){
+			return value.toFixed(2)
+			});
+			new Vue({
+			el: '#app',
+			data() {
+				return {
+					now_date:1,
+					page: 20,	//总共有几页
+					nowpage_1:1,	//全部当前页数,每页10条
+					nowpage_2:1,	//待付款当前页数
+					nowpage_3:1,	//待处理当前页数
+					nowpage_4:1,	//已出单当前页数
+					datas_1:[{type:1,title:'意外身故及伤残',money:'30万元',content:'旅行期间被保险人因遭受意外伤害事故导致身故、伤残的，保险公司依照合同约定给付保险金，伤残根据伤残等级按比例赔付。'},{type:1,title:'意外身故及伤残',money:'30万元',content:'旅行期间被保险人因遭受意外伤害事故导致身故、伤残的，保险公司依照合同约定给付保险金，伤残根据伤残等级按比例赔付。'},{type:1,title:'意外身故及伤残',money:'30万元',content:'旅行期间被保险人因遭受意外伤害事故导致身故、伤残的，保险公司依照合同约定给付保险金，伤残根据伤残等级按比例赔付。'},],
+					datas_2:[{type:1,title:'意外身故及伤残',money:'30万元',content:'旅行期间被保险人因遭受意外伤害事故导致身故、伤残的，保险公司依照合同约定给付保险金，伤残根据伤残等级按比例赔付。'},{type:1,title:'意外身故及伤残',money:'30万元',content:'旅行期间被保险人因遭受意外伤害事故导致身故、伤残的，保险公司依照合同约定给付保险金，伤残根据伤残等级按比例赔付。'},],
+					datas_3:[{type:1,title:'意外身故及伤残',money:'30万元',content:'旅行期间被保险人因遭受意外伤害事故导致身故、伤残的，保险公司依照合同约定给付保险金，伤残根据伤残等级按比例赔付。'}],
+					datas_0:[{datetime:'2020-03-20',state:'待确认',product:'平安境内潜水意外综合险',policyholder:'梁超',applicant:'梁超',starttime:'2020-03-20',endtime:'2021-03-21',promotion:40.00,ordermoney:200.00},{datetime:'2020-03-20',state:'待确认',product:'平安境内潜水意外综合险',policyholder:'梁超',applicant:'梁超',starttime:'2020-03-20',endtime:'2021-03-21',promotion:40.00,ordermoney:200.00},{datetime:'2020-03-20',state:'待确认',product:'平安境内潜水意外综合险',policyholder:'梁超',applicant:'梁超',starttime:'2020-03-20',endtime:'2021-03-21',promotion:40.00,ordermoney:200.00},{datetime:'2020-03-20',state:'待确认',product:'平安境内潜水意外综合险',policyholder:'梁超',applicant:'梁超',starttime:'2020-03-20',endtime:'2021-03-21',promotion:40.00,ordermoney:200.00}],
+					
+			        
+			        //3个label，即index下标
+			        agate: 1,
+			        pearl: 2,
+			        diamond: 3,
+					d_search: {
+						placeholder: '被保人、产品名称、订单编号',
+						keyword: ''
+					},
+				}
+			},
+			computed: {
+			
+			    },
+			methods:{				
+				jump_content(index,item){
+					console.log('跳转',index,item)
+				},
+				//跳转方法
+			 	changePage (current) {
+			 		this.now_date = current		        
+			        console.log(current)
+			       
+			      },
+			     
+			},
+			})
+		</script>
+	</body>
+</html>

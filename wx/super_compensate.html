@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+		<meta charset="UTF-8">
+		<title>超赔险</title>
+		<script type="text/javascript" src="../js/main.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="http://cdn.zljan.com/insurance/mobile/base/css/cube.css" />
+		<link rel="stylesheet" href="../css/global.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link rel="stylesheet" href="../css/flex.css" />
+		<script type="text/javascript" src="../js/common.js"></script>
+		<script type="text/javascript" src="http://cdn.zljan.com/insurance/mobile/base/js/swiper.min.js" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<div class="super_com">
+				<div class="super_top">
+					<p class="fs36 color_fff pt30 ml30">平安保险-超赔险</p>
+					<div class="super_top_infor">
+						<p class="center-lr-scatter pb30 btm_line">
+							<span class="fs32 color_txt_666">保障计划</span>
+							<span class="fs32 color_txt_666 font_bold">限额200万</span>
+						</p>
+						<p class="fs26 mt20 color_txt_666"><span>保障期限：{{bz_time}}</span></p>
+						<p class="fs26 mt15 color_txt_666"><span>受益人：法定受益人</span></p>
+					</div>
+				</div>
+				<!--投保人信息-->
+				<div class="tb_info">					
+					<p class="ml30 fs32 font_bold mb20"><span class="mr20 font_bold color_txt_333">投保人信息</span><i class="iconfont color_txt_f44 fs34" style="font-weight: 600;">&#xe644;</i><span class="fs24 color_txt_666">号为必填</span></p>
+					<!--mandatory_info为必填class-->
+					<div class="pl30 pr30 bg_fff">
+					<p class="mandatory_info pt30 pb30 bg_fff btm_line row_center">
+						<span class="laber_class"><i class="iconfont color_txt_f44 fs34 star_class">&#xe644;</i><span class="laber_text">名称</span></span>
+						<span class="laber_right_class"><input placeholder="请输入投保人名称" v-model="info.name"/></span>
+					</p>
+					<p class="mandatory_info pt20 pb20 bg_fff btm_line lh30 row_center">
+						<span class="laber_class">投保人性质</span>
+						<span class="laber_right_class">
+							<cube-checker
+							  v-model="info.nature"
+							  :options="options"
+							  type="radio" /></span>
+					</p>
+					<p class="mandatory_info pt30 pb30 bg_fff btm_line row_center">
+						<span class="laber_class"><i class="iconfont color_txt_f44 fs34 star_class">&#xe644;</i><span class="laber_text">证件号码</span></span>
+						<span class="laber_right_class"><input placeholder="请输入投保人证件号码" v-model="info.id"/></span>
+					</p>
+					<p class="mandatory_info pt30 pb30 bg_fff row_centers">
+						<span>
+						<span class="laber_class"><i class="iconfont color_txt_f44 fs34 star_class">&#xe644;</i><span class="laber_text">营业执照</span></span>
+						<span class="laber_right_class"><input placeholder="请点击拍照上传营业执照" v-model="info.license" disabled="disabled"/></span></span>
+						<span style="text-align: right;float: right;">
+							<!--<cube-upload
+							  ref="upload"
+							  :action="action"
+							  :simultaneous-uploads="1"
+							  :process-file="processFile"
+							  @file-submitted="fileSubmitted">							
+							    <cube-upload-btn :multiple="false">
+							      <i class="iconfont fs40 icon_weight">&#xe637;</i>
+							    </cube-upload-btn>							
+						</cube-upload>-->
+							      <i class="iconfont fs40 icon_weight" @click="take_pictures">&#xe637;</i>
+						
+						</span>
+					</p>
+					<p  class="mandatory_info pt30 pb30 bg_fff 00" style="height: 2.4rem;font-size: 0;">
+						<img width="60%" style="height: 2.4rem;"  src="../img/v2_q9dzlp.png">
+						<span style="width: 40%;line-height: 2.2rem;height: 2.4rem;display: inline-block;text-align: center;font-size: 0.28rem;vertical-align: text-bottom;"><a style="color: #546AAF;"  @click="showImagePreview">点击预览</a></span>
+					</p>
+					<p class="mandatory_info pt30 pb30 bg_fff btm_line row_center">
+						<span class="laber_class"><span>手机号</span></span>
+						<span class="laber_right_class"><input placeholder="请输入联系人手机号" v-model="info.phone"/></span>
+					</p>
+					<p class="mandatory_info pt30 pb30 bg_fff row_center">
+						<span class="laber_class"><span >电子邮箱</span></span>
+						<span class="laber_right_class"><input placeholder="请输入联系人电子邮箱" v-model="info.email"/></span>
+					</p>
+					</div>
+				</div>
+				<!--车辆信息-->
+				<div class="tb_info mt30 car_info">					
+					<p class="ml30 fs32 font_bold mb20"><span class="mr20 font_bold color_txt_333">车辆信息</span><i class="iconfont color_txt_f44 fs34" style="font-weight: 600;">&#xe644;</i><span class="fs24 color_txt_666">号为必填</span></p>
+					<!--mandatory_info为必填class-->
+					<div class="pl30 pr30 bg_fff">
+						
+					
+					<p class="mandatory_info pt30 pb30 bg_fff row_centers">
+						<!--<span class="laber_class"><i class="iconfont color_txt_f44 fs34 star_class">&#xe644;</i><span class="laber_text">行驶证</span></span>-->
+						<span>
+						<span class="laber_class text_left"><i class="iconfont color_txt_f44 fs34 valign_top star_class">&#xe644;</i><span class="laber_text more_font">行驶证照片</span></span>
+						
+						<span class="laber_right_class" style="width: 50%!important;"><input placeholder="请点击拍照上传行驶证照片" v-model="info.license" disabled="disabled"  class="drive_input"/></span></span>
+						<span style="text-align: right;float: right;">
+							      <i class="iconfont fs40 icon_weight" @click="take_pictures">&#xe637;</i>
+							    </span>
+					</p>
+					<p class="btm_line pb10">
+						<span class="fs20 color_txt_FF9906 ">上传行驶证可自动识别‘车牌号’、‘车架号’等车辆信息</span>
+					</p>
+					<p class="mandatory_info pt30 pb30 bg_fff btm_line row_center">
+						<span class="laber_class"><i class="iconfont color_txt_f44 fs34 star_class">&#xe644;</i><span class="laber_text">车牌号</span></span>
+						<span class="laber_right_class"><input placeholder="请输入车牌号（上传行驶证可自动识别）" v-model="info.plate"/></span>
+					</p>
+					
+					<p class="mandatory_info pt30 pb30 bg_fff btm_line row_center">
+						<span class="laber_class"><i class="iconfont color_txt_f44 fs34 star_class">&#xe644;</i><span class="laber_text">车架号</span></span>
+						<span class="laber_right_class"><input placeholder="请输入车架号（上传行驶证可自动识别）" v-model="info.chassis"/></span>
+					</p>
+					<p class="mandatory_info pt30 pb30 bg_fff btm_line row_center" @click="choose_cartype">
+						<span class="laber_class"><i class="iconfont color_txt_f44 fs34 star_class">&#xe644;</i><span class="laber_text">车辆类型</span></span>
+						<span class="laber_right_class" style="width: 50%!important;"><input placeholder="请选择车辆类型" v-model="info.car_type" disabled="disabled" /></span>
+						<span class="right_dx"><i @click="choose_cartype" class="iconfont color_txt_333 fs40 fs34">&#xe628;</i></span>
+					</p>
+					<p class="mandatory_info pt30 pb30 bg_fff row_center">
+						<span class="laber_class"><span>核定载质量</span></span>
+						<span class="laber_right_class"><input placeholder="请输入车辆核定载质量/总质量" v-model="info.quality"/></span>
+					</p>
+					</div>
+				</div>
+				<!--发票信息-->
+				<div class="tb_info mt30">										
+					<p class="ml30 fs32 font_bold mb20"><span class="mr20 font_bold color_txt_333">发票信息</span><i class="iconfont color_txt_f44 fs34" style="font-weight: 600;">&#xe644;</i><span class="fs24 color_txt_666">号为必填</span></p>						
+					<!--mandatory_info为必填class-->
+					<div class="pl30 pr30 bg_fff">
+						<p class="mandatory_info pt30 pb30 bg_fff btm_line row_center" @click="choose_invoicetype">
+						<span class="laber_class"><i class="iconfont color_txt_f44 fs34 star_class">&#xe644;</i><span class="laber_text">发票类型</span></span>
+						<span class="laber_right_class" style="width: 50%!important;"><input placeholder="请选择发票类型" v-model="info.invoice_type" disabled="disabled" /></span>
+						<span class="right_dx"><i @click="choose_invoicetype" class="iconfont color_txt_333 fs40 fs34">&#xe628;</i></span>
+					</p>
+					<div v-show="to_tax">
+					<p class="mandatory_info pt30 pb30 bg_fff btm_line row_center">
+						<span class="laber_class text_left"><i class="iconfont color_txt_f44 fs34 valign_top star_class">&#xe644;</i><span class="laber_text more_font">纳税人名称</span></span>
+						<span class="laber_right_class"><input placeholder="请输入纳税人名称" v-model="info.tax_name"/></span>
+					</p>
+					<p class="mandatory_info pt15 pb15 bg_fff btm_line row_center">
+						<span class="laber_class text_left lh36"><i class="iconfont color_txt_f44 fs34 valign_top star_class">&#xe644;</i><span class="laber_text more_font">车纳税人识别号</span></span>
+						<span class="laber_right_class"><input placeholder="请输入纳税人识别号" v-model="info.cartax_name"/></span>
+					</p>
+					
+					<p class="mandatory_info pt30 pb30 bg_fff btm_line row_center">
+						<span class="laber_class"><i class="iconfont color_txt_f44 fs34 star_class">&#xe644;</i><span class="laber_text">开户行</span></span>
+						<span class="laber_right_class"><input placeholder="请输入开户银行名称" v-model="info.bank"/></span>
+					</p>
+					<p class="mandatory_info pt30 pb30 bg_fff btm_line row_center">
+						<span class="laber_class"><i class="iconfont color_txt_f44 fs34 star_class">&#xe644;</i><span class="laber_text">银行账号</span></span>
+						<span class="laber_right_class"><input placeholder="请输入开户银行账号" v-model="info.bank_account"/></span>
+					</p>
+					<p class="mandatory_info pt30 pb30 bg_fff btm_line row_center">
+						<span class="laber_class"><span>地址</span></span>
+						<span class="laber_right_class"><input placeholder="请输入地址" v-model="info.address"/></span>
+					</p>
+					<p class="mandatory_info pt30 pb30 bg_fff btm_line row_center">
+						<span class="laber_class"><span>电话</span></span>
+						<span class="laber_right_class"><input placeholder="请输入联系电话" v-model="info.tax_phone"/></span>
+					</p>
+					</div>
+					</div>
+				</div>
+				<!--保障期限-->
+				<div class="tb_info mt30">					
+					<p class="ml30 fs32 font_bold mb20"><span class="mr20 font_bold color_txt_333">保障期限</span><i class="iconfont color_txt_f44 fs34" style="font-weight: 600;">&#xe644;</i><span class="fs24 color_txt_666">号为必填</span></p>						
+					<!--mandatory_info为必填class-->
+					<div class="pl30 pr30 bg_fff">
+					<p class="mandatory_info pt30 pb30 bg_fff btm_line row_center">
+						<span class="laber_class"><i class="iconfont color_txt_f44 fs34 star_class">&#xe644;</i><span class="laber_text">起保日期</span></span>
+						<span class="laber_right_class"><input placeholder="请选择起保日期" v-model="info.choose_time" disabled="disabled"/></span>
+						<span class="right_dx"><i @click="showDatePicker" class="iconfont color_txt_333 fs40 fs34">&#xe62b;</i></span>
+					</p>
+					<p class="mandatory_info pt30 pb30 bg_fff row_center">
+						<span class="laber_class"><span>届满日期</span></span>
+						<span class="laber_right_class"><input placeholder="根据起保日期自动计算" disabled="disabled"/></span>
+						<span class="right_dx">1 年</span>
+					</p>
+					</div>
+				</div>
+				<div class="pt40 pb40">
+					<p class=""><cube-checkbox v-model="checked" class='fs24 font_bold with-click'>
+					  <span class="font_bold">本人阅读并同意</span><a class="font_bold" href="javascript:;" @click="console.log(4)" style="color: #FF4423;">《投保须知》</a>&nbsp;<a class="font_bold" href="javascript:;" @click.stop style="color: #FF4423;">《保险条款》</a></cube-checkbox></p>
+				</div>
+				<!----------prd_fixed------------->
+					<div class="prd_fixed clearfix">
+						<div class="prd_fixed_left pull_left" style="width: 40%!important;">
+							<!--<i class="iconfont iconkefu theme_color_txt fs40 block mt15"></i>-->
+							<p><span class="fs32 font_bold" style="color: #FF4423;">￥900.00</span></p>
+						</div>
+						<cube-button class="prd_fixed_right pull_left" style='width: 60%!important;' :disabled="!checked" @click="console.log(5)">立即购买</cube-button>
+					</div>
+			</div>
+		</div>
+		<script>
+			new Vue({
+			el: '#app',
+			data() {
+				return {
+					to_tax:true,
+					checked:false,
+					 action: {
+				        target: '//jsonplaceholder.typicode.com/photos/',
+				        prop: 'base64Value'
+				      },
+					bz_time:'1年',
+					 options: [
+				        {
+				          value: 0,
+				          text: '企业'
+				        },
+				        {
+				          value: 1,
+				          text: '个人'
+				        }
+				      ],
+				       column1 : [{ text: '小轿车', value: 1}, { text: '客车', value: 2 }],
+				       column2 : [{ text: '普通发票', value: 1}, { text: '增值税专用发票', value: 2 }],
+					info:{
+						name:'',	//名称
+						nature:1,	//投保人性质
+						id:'',	//证件号码
+						license:'',	//营业执照
+						phone:'',	//手机号
+						email:'',	//电子邮箱
+						plate:'',	//车牌
+						car_type:'',	//车辆类型
+						chassis:'',	//车架号
+						quality:'',	//核定载质量
+						invoice_type:'',	//发票类型
+						tax_name:'',	//纳税人名称
+						cartax_name:'',	//车纳税人识别号
+						bank:'',	//开户行
+						bank_account:'',	//银行账号
+						address:'',	//地址
+						tax_phone:'',	//发票电话
+						choose_time:'',	//起保日期
+					},
+					imgs:['../img/v2_q9dzlp.png']
+				}
+			},
+			 methods: {
+			 	//预览图片
+			 	showImagePreview() {
+			      this.$createImagePreview({
+			        imgs: this.imgs
+			      }).show()
+			    },
+			 	take_pictures(){
+			 		this.$createToast({
+				        type: 'correct',
+				        txt: '点击拍照',
+				        time: 1000
+				      }).show()
+			 	},
+			 	//选择发票类型
+			 	choose_invoicetype(){
+			 		if (!this.picker) {
+				        this.picker = this.$createPicker({
+				          title: '车辆类型',
+				          data: [this.column2],
+				          onSelect: this.invoice_select,
+				          onCancel: this.cancelHandle
+				        })
+				      }
+				      this.picker.show()
+			 	},
+			 	invoice_select(selectedVal, selectedIndex, selectedText) {
+				   
+				      this.info.invoice_type = selectedText
+				   },
+			 	//选择车辆类型
+			 	choose_cartype(){
+			 		 if (!this.picker) {
+				        this.picker = this.$createPicker({
+				          title: '车辆类型',
+				          data: [this.column1],
+				          onSelect: this.car_select,
+				          onCancel: this.cancelHandle
+				        })
+				      }
+				      this.picker.show()
+			 	},
+			 	car_select(selectedVal, selectedIndex, selectedText) {
+				   
+				      this.info.car_type = selectedText
+				   },
+			 	//选择时间
+			 	showDatePicker() {
+			      if (!this.datePicker) {
+			        this.datePicker = this.$createDatePicker({
+			          title: '起保日期',
+			          min: new Date(2008, 7, 8),
+			          max: new Date(2020, 9, 20),
+			          value: new Date(),
+			          onSelect: this.selectHandle,
+			          onCancel: this.cancelHandle
+			        })
+			      }
+			
+			      this.datePicker.show()
+			    },
+			    selectHandle(date, selectedVal, selectedText) {			
+			      this.info.choose_time = selectedText.join('-')			      
+			    },
+			     cancelHandle() {
+				      this.$createToast({
+				        type: 'correct',
+				        txt: '取消',
+				        time: 1000
+				      }).show()
+				    },
+						    processFile(file, next) {
+//			      compress(file, {
+//			        compress: {
+//			          width: 1600,
+//			          height: 1600,
+//			          quality: 0.5
+//			        }
+//			      }, next)
+				console.log('上传图片')
+			    },
+			    fileSubmitted(file) {
+			      file.base64Value = file.file.base64
+			    }
+			  }
+			})
+		</script>
+	</body>
+</html>

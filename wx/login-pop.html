@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+		<meta charset="UTF-8">
+		<title>登录弹出框</title>
+		<script type="text/javascript" src="../js/main.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="http://cdn.zljan.com/insurance/mobile/base/css/cube.css" />
+		<link rel="stylesheet" href="../css/global.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<script type="text/javascript" src="../js/common.js"></script>
+		<!--<script type="text/javascript" src="../js/wlogin_v20190614.js"></script>-->
+		
+		
+		<style>
+			[v-cloak] {
+				display: none !important;
+			}
+		</style>
+	</head>
+	<body class="bg_fff">
+		<div id="app">
+			<div class="login_title">
+				<p class="fs50 font_bold">绑定成为代理人</p>
+				<!--<p class="fs30 color_888 mt20 ml5">账号绑定</p>-->
+			</div>
+			<div class="login_form pop_box">
+				<div class="prompt_box">
+					<span class="color_txt_101010 fs32 font_bold">提示：</span>
+					<p class="fs32 color_txt_606266 mt40">该手机号已被XX渠道添加为代理人</p>
+					<p class="fs32 color_txt_606266 mt15">是否同意绑定并去完善账号银行卡信息？</p>
+					<cube-checkbox v-model="checked" class='pd0 mt10 fs24'>
+					  我已阅读并同意<a href="javascript:;" @click.stop>《普通客户注册条款》</a></cube-checkbox>
+				</div>
+				<cube-button id="loginBtn" :disabled="!checked" @click="login_submit" class="mt110 border_radius1 relative btn-disabled">绑定并去完善信息<cube-loading
+					v-if="loadingShow" ></cube-loading>
+				</cube-button>
+				<cube-button  @click="login_cancel" class=" mt30 border_radius1 relative bg_909399">取消
+				</cube-button>
+			</div>
+		</div>
+	</body>
+	<script>
+		var objItem = {};
+objItem.variable = {
+    sourceType: _bao_h5_tools.url_param('sourceType') || 'mobile',
+    reSource: _bao_h5_tools.url_param('reSource'),
+    userId: _bao_h5_tools.url_param('userId'),
+    openId: _bao_h5_tools.url_param('openId'),
+    isInsurance: window.location.pathname.indexOf('/insurance') > 0
+};
+objItem.ajax = {
+	init: function() {	
+		objItem.vue.init();		
+	},
+};
+objItem.vue = {
+    obj: undefined,
+    data: {
+		checked:false,
+		loadingShow:false
+    },
+    methods: {
+		login_submit(){
+					var that = this;
+					that.loadingShow=true;
+					setTimeout(function(){
+						that.loadingShow=false;
+						console.log("绑定成功");
+					},500)
+					
+				},
+				login_cancel(){
+					this.checked=false;
+					console.log("取消函数");
+				},
+    },
+    watch:{
+				checked:function(){
+					if(this.checked){	
+						document.getElementById("loginBtn").setAttribute("style","background-color: #0084FF !important;");
+						console.log('选择了')
+					}else{
+						document.getElementById("loginBtn").setAttribute("style","background-color: ;");
+						
+					}
+				}
+			},
+    init: function () {
+        objItem.vue.create();
+    },
+    create: function () {
+        objItem.vue.obj = new Vue({
+            el: '#app',
+            data: objItem.vue.data,
+            methods: objItem.vue.methods,
+            computed: objItem.vue.computed,
+            watch:objItem.vue.watch,
+            mounted: function () {
+                //var _vue = this;
+               
+                /* this.$nextTick(function () {
+                    objItem.vue.session_to_vue(_vue);
+                    $(window).scroll(function () {
+                        _vue.tab_scroll_update();
+                    });
+                    _vue.init_insurance_select();
+                }); */
+            }
+        });
+    },
+};
+$(function () {
+    console.log('item begin .....');
+    objItem.ajax.init();
+});
+
+//		new Vue({
+//			el: '#app',
+//			data() {
+//				return {						
+//					checked:false,
+//					loadingShow:false
+//				}
+//			},
+//			watch:{
+//				checked:function(){
+//					if(this.checked){	
+//						document.getElementById("loginBtn").setAttribute("style","background-color: #0084FF !important;");
+//						console.log('选择了')
+//					}else{
+//						document.getElementById("loginBtn").setAttribute("style","background-color: ;");
+//						
+//					}
+//				}
+//			},
+//			methods: {
+//				login_submit(){
+//					var that = this;
+//					that.loadingShow=true;
+//					setTimeout(function(){
+//						that.loadingShow=false;
+//						console.log("绑定成功");
+//					},500)
+//					
+//				},
+//				login_cancel(){
+//					this.checked=false;
+//					console.log("取消函数");
+//				},
+//			},
+//			mounted() {
+//
+//			}
+//		});
+	</script>
+</html>

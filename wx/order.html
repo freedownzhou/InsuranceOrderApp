@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+		<meta charset="UTF-8">
+		<title>订单中心</title>
+		<script type="text/javascript" src="../js/main.js"></script>
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/flex.css"/>
+		<link rel="stylesheet" type="text/css" href="http://cdn.zljan.com/insurance/mobile/base/css/cube.css" />
+		<link rel="stylesheet" href="../css/global.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<script type="text/javascript" src="../js/common.js"></script>
+		<!--<script type="text/javascript" src="../js/wlogin_v20190614.js"></script>-->
+	</head>
+	<body>
+		<div  id="app" class='order_ym'>
+			<!--searchBar-->
+			<div class="top_search_bar search_bar_fix clearfix pt20 pb20 bg_fff">
+				<div class="my_order pull_left pl10" @click="refresh_submit">
+					<i class="iconfont fs50 theme_color_txt">&#xe602;</i>
+					
+					<p class="fs24 mt10 color_txt_656">刷新</p>
+				</div>
+				<cube-input :placeholder="d_search.placeholder" v-model="d_search.keyword" class="search_input ml20"></cube-input>
+				<a @click="search_submit" class="pull_right theme_color_txt" href="javascript:;">搜索</a>
+			</div>
+			<!--order_warp-->
+			<cube-page type="tab-composite-view" title="tab-composite">
+			    <div slot="content">
+			      <cube-tab-bar v-model="selectedLabel"
+			                    show-slider
+			                    :use-transition="disabled"
+			                    ref="tabNav"
+			                    :data="tabLabels">
+			      </cube-tab-bar>
+			      <p class="gang_p"></p>
+			      <div class="tab-slide-container">
+			        <cube-slide
+			          ref="slide"
+			          :loop="loop"
+			          :initial-index="initialIndex"
+			          :auto-play="autoPlay"
+			          :show-dots="showDots"
+			          :options="slideOptions"
+			          @scroll="scroll"
+			          @change="changePage"
+			        >
+			          <!-- 全部 -->
+			          <cube-slide-item class='scroll_box'>
+			            <cube-scroll :data="allData" :options="scrollOptions" @scroll="onScrollHandle" ref="scroll1"  :scroll-events="['scroll']" :scroll-end="console.log('end')">
+			            	<div  class="slide_box">
+			            		<div class="all_xhbox" v-for="(item,index) in datas_1" :key='index'>
+			            		<p style="width: 100%;height: 0.1rem;background: #F2F2F2;"></p>
+			            			
+			            			<p class="center-lr-scatter xunh_title"><span>{{item.datetime}}</span><span class="color_txt_FFA53D">{{item.state}}</span></p>
+			            			<div class="pl40">
+			            				<div class="xunh_content pb30">
+			            					<img src="../img/v2_q7n4mj.png" width="65px" height="65px"/> 
+			            					<div class="ml20" style="display: inline-block;vertical-align: top;"> 
+			            						<p class="color_txt_101010 fs28 mt5">{{item.product}}</p>
+			            						<p class="mt10">投保人：{{item.policyholder}}</p>
+			            						<p class="mt10">被保人：{{item.applicant}}</p>
+			            						<p class="mt10">保险期间：{{item.starttime}} 至 {{item.endtime}}</p>		            						
+			            					</div>
+			            				</div>
+			            				<p class="center-lr-scatter xunh_title" style="border: 0;padding-left: 0;"><span class="color_txt_FFA53D">预计推广费：{{item.promotion|addZero}}元</span><span>订单金额：{{item.ordermoney|addZero}}元</span></p>
+			            				<p class="text_right pl20 pr20">
+			            					<button class="order_btn" @click="paymoney" v-if="item.type != 4">付款</button>
+			            					<button class="order_btn" @click="tb_again" v-if="item.type != 4">再次投保</button>
+			            				</p>
+			            			</div>
+			            		</div>
+
+
+			            		<div class="text_center fs28 mt60 mb60 color_txt_999">
+			            			<p @click="onPullingUp(1)"  v-if="nowpage_1<page&&page!=1" style="border: 0;"><span class="table_btm">点击加载</span></p>
+			            			<p class="" v-if="page==nowpage_1"><span style="margin: 0 auto;" colspan="5">没有更多了</span></p>
+			            		</div>
+			            	</div>	
+			            	
+			            </cube-scroll>					            
+			          </cube-slide-item>
+			          <!-- 代付款 -->
+			          <cube-slide-item class='scroll_box'>
+			            <cube-scroll :data="forPayment" :options="scrollOptions" ref="scroll" >
+			            	<div  class="slide_box">
+			            		<div class="all_xhbox" v-for="(item,index) in datas_2" :key='index'>
+			            		<p style="width: 100%;height: 0.1rem;background: #F2F2F2;"></p>
+			            			
+			            			<p class="center-lr-scatter xunh_title"><span>{{item.datetime}}</span><span class="color_txt_FFA53D">{{item.state}}</span></p>
+			            			<div class="pl40">
+			            				<div class="xunh_content pb30">
+			            					<img src="../img/v2_q7n4mj.png" width="65px" height="65px"/> 
+			            					<div class="ml20" style="display: inline-block;vertical-align: top;"> 
+			            						<p class="color_txt_101010 fs28 mt5">{{item.product}}</p>
+			            						<p class="mt10">投保人：{{item.policyholder}}</p>
+			            						<p class="mt10">被保人：{{item.applicant}}</p>
+			            						<p class="mt10">保险期间：{{item.starttime}} 至 {{item.endtime}}</p>		            						
+			            					</div>
+			            				</div>
+			            				<p class="center-lr-scatter xunh_title" style="border: 0;padding-left: 0;"><span class="color_txt_FFA53D">预计推广费：{{item.promotion|addZero}}元</span><span>订单金额：{{item.ordermoney|addZero}}元</span></p>
+			            				<p class="text_right pl20 pr20">
+			            					<button class="order_btn" @click="paymoney">付款</button>
+			            					<button class="order_btn" @click="tb_again" v-if="item.type != 4">再次投保</button>
+			            				</p>
+			            			</div>
+			            		</div>
+			            		
+
+			            		<div class="text_center fs28 mt60 mb60 color_txt_999">
+			            			<p @click="onPullingUp(2)"  v-if="nowpage_2<page&&page!=1" style="border: 0;"><span class="table_btm">点击加载</span></p>
+			            			<p v-if="page==nowpage_2"><span style="margin: 0 auto;" colspan="5">没有更多了</span></p>
+			            		</div>	            	
+			            	</div>
+			            </cube-scroll>
+			          </cube-slide-item>
+			          <!--待处理-->
+			          <cube-slide-item class='scroll_box'>
+			            <cube-scroll :data="toProcessed" :options="scrollOptions" style='background-color: #F7F8FA;' ref="scroll" >
+			            	<div  class="slide_box">
+			            		<div class="all_xhbox" v-for="(item,index) in datas_3" :key='index'>
+			            		<p style="width: 100%;height: 0.1rem;background: #F2F2F2;"></p>
+			            			
+			            			<p class="center-lr-scatter xunh_title"><span>{{item.datetime}}</span><span class="color_txt_FFA53D">{{item.state}}</span></p>
+			            			<div class="pl40">
+			            				<div class="xunh_content pb30">
+			            					<img src="../img/v2_q7n4mj.png" width="65px" height="65px"/> 
+			            					<div class="ml20" style="display: inline-block;vertical-align: top;"> 
+			            						<p class="color_txt_101010 fs28 mt5">{{item.product}}</p>
+			            						<p class="mt10">投保人：{{item.policyholder}}</p>
+			            						<p class="mt10">被保人：{{item.applicant}}</p>
+			            						<p class="mt10">保险期间：{{item.starttime}} 至 {{item.endtime}}</p>		            						
+			            					</div>
+			            				</div>
+			            				<p class="center-lr-scatter xunh_title" style="border: 0;padding-left: 0;"><span class="color_txt_FFA53D">预计推广费：{{item.promotion|addZero}}元</span><span>订单金额：{{item.ordermoney|addZero}}元</span></p>
+			            				<p class="text_right pl20 pr20">
+			            					<button class="order_btn" @click="paymoney">付款</button>
+			            					<button class="order_btn" @click="tb_again" v-if="item.type != 4">再次投保</button>
+			            				</p>
+			            			</div>
+			            		</div>
+			            		
+
+			            		<div class="text_center fs28 mt60 mb60 color_txt_999">
+			            			<p @click="onPullingUp(3)"  v-if="nowpage_3<page&&page!=1" style="border: 0;"><span class="table_btm">点击加载</span></p>
+			            			<p v-if="page==nowpage_3"><span style="margin: 0 auto;" colspan="5">没有更多了</span></p>
+			            		</div>		            	
+			            	</div>
+			            </cube-scroll>
+			          </cube-slide-item>
+			          <!--已出单-->
+			          <cube-slide-item  class='scroll_box'>
+			            <cube-scroll :data="haveSingle" :options="scrollOptions" ref="scroll" >
+			            	<div  class="slide_box">
+			            		<div class="all_xhbox" v-for="(item,index) in datas_4" :key='index'>
+			            		<p style="width: 100%;height: 0.1rem;background: #F2F2F2;"></p>
+			            			
+			            			<p class="center-lr-scatter xunh_title"><span>{{item.datetime}}</span><span class="color_txt_FFA53D">{{item.state}}</span></p>
+			            			<div class="pl40">
+			            				<div class="xunh_content pb30">
+			            					<img src="../img/v2_q7n4mj.png" width="65px" height="65px"/> 
+			            					<div class="ml20" style="display: inline-block;vertical-align: top;"> 
+			            						<p class="color_txt_101010 fs28 mt5">{{item.product}}</p>
+			            						<p class="mt10">投保人：{{item.policyholder}}</p>
+			            						<p class="mt10">被保人：{{item.applicant}}</p>
+			            						<p class="mt10">保险期间：{{item.starttime}} 至 {{item.endtime}}</p>		            						
+			            					</div>
+			            				</div>
+			            				<p class="center-lr-scatter xunh_title" style="border: 0;padding-left: 0;"><span class="color_txt_FFA53D">预计推广费：{{item.promotion|addZero}}元</span><span>订单金额：{{item.ordermoney|addZero}}元</span></p>
+			            				<p class="text_right pl20 pr20">
+			            					<button class="order_btn" @click="paymoney" v-if="item.type != 4">付款</button>
+			            					<button class="order_btn" @click="tb_again" v-if="item.type != 4">再次投保</button>
+			            				</p>
+			            			</div>
+			            		</div>
+			            		
+
+			            		<div class="text_center fs28 mt60 mb60 color_txt_999">
+			            			<p @click="onPullingUp(4)"  v-if="nowpage_4<page&&page!=1" style="border: 0;"><span class="table_btm">点击加载</span></p>
+			            			<p v-if="page==nowpage_4"><span style="margin: 0 auto;" colspan="5">没有更多了</span></p>
+			            		</div>		            	
+			            	</div>
+			            </cube-scroll>
+			          </cube-slide-item>
+			        </cube-slide>
+			      </div>
+			    </div>
+			  </cube-page>
+		</div>
+		<script>
+			Vue.filter('addZero',function(value){
+			return value.toFixed(2)
+			});
+			new Vue({
+			el: '#app',
+			data() {
+				return {
+					page: 20,	//总共有几页
+					nowpage_1:1,	//全部当前页数,每页10条
+					nowpage_2:1,	//待付款当前页数
+					nowpage_3:1,	//待处理当前页数
+					nowpage_4:1,	//已出单当前页数
+					datas_1:[{type:1,datetime:'2020-03-20',state:'待确认',product:'平安境内潜水意外综合险',policyholder:'梁超',applicant:'梁超',starttime:'2020-03-20',endtime:'2021-03-21',promotion:40.00,ordermoney:200.00},{type:4,datetime:'2020-03-20',state:'已出单',product:'平安境内潜水意外综合险',policyholder:'梁超',applicant:'梁超',starttime:'2020-03-20',endtime:'2021-03-21',promotion:40.00,ordermoney:200.00},{type:4,datetime:'2020-03-20',state:'已出单',product:'平安境内潜水意外综合险',policyholder:'梁超',applicant:'梁超',starttime:'2020-03-20',endtime:'2021-03-21',promotion:40.00,ordermoney:200.00}],
+					datas_2:[{type:2,datetime:'2020-03-20',state:'待付款',product:'平安境内潜水意外综合险',policyholder:'梁超',applicant:'梁超',starttime:'2020-03-20',endtime:'2021-03-21',promotion:40.00,ordermoney:200.00}],
+					datas_3:[{type:3,datetime:'2020-03-20',state:'待确认',product:'平安境内潜水意外综合险',policyholder:'梁超',applicant:'梁超',starttime:'2020-03-20',endtime:'2021-03-21',promotion:40.00,ordermoney:200.00}],
+					datas_4:[{type:4,datetime:'2020-03-20',state:'已出单',product:'平安境内潜水意外综合险',policyholder:'梁超',applicant:'梁超',starttime:'2020-03-20',endtime:'2021-03-21',promotion:40.00,ordermoney:200.00}],
+					
+					datas_0:[{datetime:'2020-03-20',state:'待确认',product:'平安境内潜水意外综合险',policyholder:'梁超',applicant:'梁超',starttime:'2020-03-20',endtime:'2021-03-21',promotion:40.00,ordermoney:200.00},{datetime:'2020-03-20',state:'待确认',product:'平安境内潜水意外综合险',policyholder:'梁超',applicant:'梁超',starttime:'2020-03-20',endtime:'2021-03-21',promotion:40.00,ordermoney:200.00},{datetime:'2020-03-20',state:'待确认',product:'平安境内潜水意外综合险',policyholder:'梁超',applicant:'梁超',starttime:'2020-03-20',endtime:'2021-03-21',promotion:40.00,ordermoney:200.00},{datetime:'2020-03-20',state:'待确认',product:'平安境内潜水意外综合险',policyholder:'梁超',applicant:'梁超',starttime:'2020-03-20',endtime:'2021-03-21',promotion:40.00,ordermoney:200.00}],
+					// 默认打开显示哪个页面
+					selectedLabel: '全部',
+					tabLabels: [{
+			          label: '全部'
+			        }, {
+			          label: '待付款'
+			        }, {
+			          label: '待处理'
+			        }, {
+			          label: '已出单'
+			        }],
+			        loop: false,	//不循环
+			        autoPlay: false,	//不自动
+			        showDots: false,
+			         //slide绑定的属性
+			        slideOptions: {
+			          listenScroll: true,
+			          probeType: 4,
+			          /* 在水平和垂直滚动的同时锁定y方向 */
+			          directionLockThreshold: 0,
+			//         click: false
+			        },
+			        scrollOptions: {
+			          /* 在水平和垂直滚动的同时锁定x方向 */
+			          directionLockThreshold: 0,
+			          scrollY: true,
+			          freeScroll:true,
+			       
+			           click: false
+			        },
+			        disabled: false,	//是否开启 transition 过渡
+			        
+			        //3个label，即index下标
+			        allData: 0,
+			        forPayment: 1,
+			        toProcessed: 2,
+			        haveSingle: 3,
+					d_search: {
+						placeholder: '被保人、产品名称、订单编号',
+						keyword: ''
+					},
+				}
+			},
+			computed: {
+			 	//下标
+			      initialIndex () {
+			        let index = 0
+			        index = this.findIndex(this.tabLabels, item => item.label === this.selectedLabel)
+			        return index
+			      },
+			      classObject:function(val){
+			      	return console.log(val)
+//				      return {
+//				        active: this.isActive && !this.error.value,
+//				        'text-danger': this.error.value && this.error.type === 'fatal',
+//				      }
+				  },
+			    },
+			methods:{
+				//加载更多函数
+				  onPullingUp(val) {
+				  	var that = this;
+				  	let s ='nowpage_'+val;
+				  	let tn = 'datas_'+val;
+				  	console.log(s)
+					that[s] += 1;
+					console.log(tn)
+					
+					const toast = this.$createToast({
+				        time: 0,
+				        txt: '加载中'
+				      })
+				      toast.show()
+				      setTimeout(() => {
+				      	if (that[s]<=that.page) {				   
+				        // 如果有新数据
+					        that[tn].push.apply(that[tn], that.datas_0);
+					        
+					        this.$refs.scroll1.refresh();
+					        this.$refs.scroll1.forceUpdate();
+//					        console.log(this.$refs.scroll)
+					        console.log(that[tn],that[s])
+					        toast.hide()
+					      } else {
+					        // 如果没有新数据
+					        that[s] = 5;
+					        console.log('没新数据')
+					        toast.hide()
+					      }				        
+				      }, 500)
+				  },
+				paymoney(){
+					console.log('付款事件')		
+				},
+				tb_again(){
+					console.log('再投保事件')							
+				},
+				search_submit(){
+					console.log('搜索事件')
+				},
+				refresh_submit(){
+					console.log('刷新事件')					
+				},
+				//找到当前和跳转index函数
+				findIndex:function(ary, fn) {
+				  if (ary.findIndex) {
+				    return ary.findIndex(fn)
+				  }
+				  /* istanbul ignore next */
+				  let index = -1
+				  /* istanbul ignore next */
+				  ary.some(function (item, i, ary) {
+				    const ret = fn.call(this, item, i, ary)
+				    if (ret) {
+				      index = i
+				      return ret
+				    }
+				  })
+				  /* istanbul ignore next */
+				  return index
+				},
+				//跳转方法
+			 	changePage (current) {
+			        this.selectedLabel = this.tabLabels[current].label			        
+			        console.log(current)
+			       
+			      },
+			      //移动效果函数
+			      scroll (pos) {	
+			        const x = Math.abs(pos.x)		        
+			        const tabItemWidth = this.$refs.tabNav.$el.clientWidth
+			        const slideScrollerWidth = this.$refs.slide.slide.scrollerWidth
+			        const deltaX = (x / slideScrollerWidth * tabItemWidth)
+			        this.$refs.tabNav.setSliderTransform(deltaX)			      
+			        //排序归0
+			        this.sort_px = false;     
+			        console.log(5)
+			      },
+			       onScrollHandle(pos) {
+//				    this.pullDownY = pos.y
+//				    if (pos.y > 0) {
+//				      this.pullDownStyle = `top:${pos.y}px`
+//				      this.triggerSurpriseFlag = false
+//				      if (this.pullDownY > 90) {
+//				        this.triggerSurpriseFlag = true
+//				      }
+//				    }
+//				    this.$refs.topHeader.style.opacity = this.headerStyle
+console.log(pos)
+				  },
+			},
+			})
+		</script>
+	</body>
+</html>

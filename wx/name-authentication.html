@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+		<meta charset="UTF-8">
+		<title>实名认证</title>
+		<script type="text/javascript" src="../js/main.js"></script>
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="http://cdn.zljan.com/insurance/mobile/base/css/cube.css" />
+		<link rel="stylesheet" href="../css/global.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<script type="text/javascript" src="../js/common.js"></script>
+		<!--<script type="text/javascript" src="../js/wlogin_v20190614.js"></script>-->
+	</head>
+	<body class="bg_fff">
+		<div class="real_name" id="app">
+			<p class="fs38">填写本人实名信息</p>
+			<p class="fs24 color_txt_656 mt20 ml5 mb30">雨点保为您提供服务</p>
+			<cube-form class="realname_form">
+				<div class="input_box clearfix">
+					<p class="fs24" style="color: rgb(214, 214, 214);">姓名</p>
+					<cube-input id="telphone" maxlength='8' v-model="users.name" :type="users.mobileType" :placeholder="p_name"
+					  @input="propertychange" class="input_one txt-input fs28" name="mobile" @focus="p_name=''" @blur="p_name='请输入姓名'"></cube-input>
+				</div>
+				<div class="input_box clearfix">
+					<p class="fs24" style="color: rgb(214, 214, 214);">身份证</p>
+					<cube-input id="telphone" maxlength='18' v-model="users.p_idcard" :type="users.mobileType" :placeholder="p_idcard"
+					 @input="propertychange" class="input_one txt-input fs28" name="mobile" @focus="p_idcard=''" @blur="p_idcard='请输入本人身份证'"></cube-input>
+				</div>
+				<div class="input_box clearfix">
+					<p class="fs24" style="color: rgb(214, 214, 214);">开户银行</p>
+					<cube-input id="telphone" maxlength='18' v-model="users.open_bank" :type="users.mobileType" :placeholder="p_open_bank"
+					 @input="propertychange" class="input_one txt-input fs28" name="mobile" @focus="p_open_bank=''" @blur="p_open_bank='请输入您的开户银行（具体到支行）'"></cube-input>
+				</div>
+				<div class="input_box clearfix">
+					<p class="fs24" style="color: rgb(214, 214, 214);">银行卡</p>
+					<cube-input id="telphone" maxlength='19' v-model="users.p_bank" :type="users.mobileType" :placeholder="p_bank"
+					 @input="propertychange" class="input_one txt-input fs28" name="mobile" @focus="p_bank=''" @blur="p_bank='请输入本人银行卡号'"></cube-input>
+				</div>
+				<p class="fs24 mt10" style="color:#888;" v-show="bank_show"><i class="iconfont fs24">&#xe601;</i> 银行预留手机号</p>
+				<div class="input_box clearfix">
+					<p class="fs24" style="color: rgb(214, 214, 214);">银行预留手机号</p>
+					<cube-input id="telphone" maxlength='11' v-model="users.phone" :type="users.mobileType" :placeholder="p_phone"
+					 @input="propertychange" class="input_one txt-input fs28" name="mobile" @focus="p_phone=''" @blur="p_phone='请输入手机号'"></cube-input>
+				</div>
+				
+				<cube-checkbox v-model="users.checked" class='pd0 fs24 mt10 with-click' @input = 'checked_change'>
+					  我已阅读并同意<a href="javascript:;" @click.stop>《普通客户实名注册注册条款》</a></cube-checkbox>
+			</cube-form>
+			<p>
+			<cube-button id="loginBtn" @click="login_submit" class="mt30 border_radius1 relative btn-disabled">下一步<cube-loading v-if="users.loadingShow"></cube-loading>
+				</cube-button></p>
+		</div>
+		
+	</body>
+	<script>
+//		Vue.filter('filterAdd1', function (value) {
+//			value = value.substr(0,3)+"****"+str.substr(4);
+//      return value;
+//  })
+		new Vue({
+			el: '#app',
+			data() {
+				return {
+					bank_show:false,	//银行图表是否显示
+					all_ok:false,		//全部验证通过
+					p_name:"请输入姓名",
+					p_idcard:"请输入身份证",	
+					p_bank:"请输入银行卡号",	
+					p_phone:"请输入手机号",
+					p_open_bank:'请输入您的开户银行（具体到支行）',
+					users:{
+						open_bank:'',
+						mobileType:'tel',
+						name:'',
+						disabled:true,
+						checked:false,
+						loadingShow:false,
+						idcard:"",	//身份证
+						bank:"",	//银行卡号
+						phone:"",
+					}
+				}
+			},
+			watch:{
+				'users.checked':function(){
+					if(this.checked){	
+//						document.getElementById("loginBtn").setAttribute("style","background-color: #0084FF !important;");
+						console.log('选择了')
+					}else{
+//						document.getElementById("loginBtn").setAttribute("style","background-color: ;");
+						
+					}
+				}
+			},
+			methods: {
+				checked_change(){
+					if(this.all_ok&&this.users.checked){
+//						document.getElementById("loginBtn").setAttribute("style","background-color: #0084FF !important;");
+					}else{
+//						document.getElementById("loginBtn").setAttribute("style","background-color: ;");
+					}
+				},
+				login_submit(){
+					var that = this;
+					that.users.loadingShow=true;
+					setTimeout(function(){
+						that.users.loadingShow=false;
+						console.log("绑定成功");
+					},500)
+					
+				},
+				propertychange: function() {
+					var that = this;
+					if(_bao_h5_valid.cardNo(this.users.idcard)){
+						let id = _bao_h5_valid.cardNo(this.users.idcard);
+						console.log("身份证通过")
+					}else{
+						console.log("身份证不通过")						
+					}
+						let ne = _bao_h5_valid.user_name(this.users.name);					
+					if(_bao_h5_valid.user_name(this.users.name)){
+						console.log("name通过",ne)
+					}else{
+						console.log("name不通过")						
+					}
+									
+					let pe = _bao_h5_valid.mobile(this.users.phone.trim());					
+					if (this.users.phone.trim().length == 11 && _bao_h5_valid.mobile(this.users.phone.trim())) {
+						console.log('手机号通过',pe)
+					} 
+					if(pe && ne){
+						this.all_ok = true;
+					}
+					if(this.all_ok&&pe && ne&&this.users.checked){
+						console.log("绑定成功");
+//						document.getElementById("loginBtn").setAttribute("style","background-color: #0084FF !important;");
+					}else{
+//						document.getElementById("loginBtn").setAttribute("style","background-color: ;");
+					}
+				},
+			},
+			mounted() {
+
+			}
+		});
+	</script>
+</html>

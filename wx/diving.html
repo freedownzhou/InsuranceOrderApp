@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+		<meta charset="UTF-8">
+		<title>潜水专题</title>
+		<script type="text/javascript" src="../js/main.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="http://cdn.zljan.com/insurance/mobile/base/css/cube.css" />
+		<link rel="stylesheet" href="../css/global.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link rel="stylesheet" href="../css/flex.css" />
+		<script type="text/javascript" src="../js/common.js"></script>
+	</head>
+	<body>
+		<div id="app" >
+			<div class="home_page">
+				<div class="home_title">
+					<div>														    	
+					      <img src="../img/v2_q7n426.png" width="100%">  
+					</div>
+				</div>
+				<!--产品-->
+				<div class="home_product mt10">
+					<p class="fs36 mb40">严选推荐</p>
+					<div v-for="(item,index) in pro_data" class="top-lr-scatter" :key='index' style="vertical-align: top;margin-bottom: 20px;" @click="jump_product(index)">
+						<div class="pro_data_box mr20" style="width: 30%;text-align: right;">
+							<img :src="item.prod_img" />
+							<p class="img_btm_font tbc-tb-scatter"><span class="fs20">{{item.parties_under}}</span></p>
+						</div>
+						<div class="pro_data_box"style="width: 70%;text-align: left;">
+							<p class="font_bold fs28">{{item.title}}</p>
+							<!--暂不显示-->
+							<!--<p class="color_txt_8484 fs24 mt5">财产损失、第三者责任</p>-->
+							<p class="mt10"><span class="annotation_span" v-for='(items,index) in item.label'>{{items.text}}</span></p>							
+							<p class="color_txt_f44 fs36 mt40">¥ {{item.money}}<span class="fs20"> 元起</span><span v-show="item.tg"  class="fs20 tg_span">推广费15%+次月结算</span></p>
+							<div class="bg_f5f"><span>{{item.introd}}</span></div>
+						</div>
+					</div>
+				</div>
+				<div>
+					<img src="../img/v2_q7n4g9.png" width="100%" />
+				</div>
+			</div>
+		</div>
+		<script>
+		new Vue({
+			el: '#app',
+			data() {
+				return {	
+				
+						pro_data:[{
+									title:'装修保（家装版）',
+									money:'868',
+									introd:'第三者财产损失：每次事故绝对免赔额人民币1000元或损失金额的10%，以高者为准',
+									parties_under:'雨点保 × 平安保险',
+									prod_img: '../img/v2_q83neb.png',
+									tg:false,
+									label:[{text:'全程旅行+水下呵护'},{text:'全程旅行'},{text:'全程旅行+水下呵护'},]
+									},
+									{
+									title:'装修保（家装版）',
+									parties_under:'雨点保 × 平安保险',
+									money:'868',
+									tg:true,
+									introd:'第三者财产损失：每次事故绝对免赔额人民币1000元或损失金额的10%，以高者为准',
+									prod_img: '../img/v2_q83neb.png',
+									label:[{text:'全程旅行+水下呵护'},{text:'全程旅行'},{text:'全程旅行+水下呵护'},]
+									
+									},{
+									title:'装修保（家装版）',
+									parties_under:'雨点保 × 平安保险',
+									money:'868',
+									tg:true,
+									introd:'第三者财产损失：每次事故绝对免赔额人民币1000元或损失金额的10%，以高者为准',
+									prod_img: '../img/v2_q83neb.png',
+									label:[{text:'全程旅行+水下呵护'},{text:'全程旅行'},{text:'全程旅行+水下呵护'},]
+									
+									},
+						]
+					}
+				
+			},
+			methods: {
+				
+				img_click(){
+					console.log('你点击了图片')
+				},
+				jump_mypolicy(){
+					console.log('跳转我的保单')
+				},
+				jump_product(val){
+					console.log('跳转到推荐产品'+val);
+				},
+				changePage(current) {
+      console.log('当前轮播图序号为:' + current)
+    },
+    clickHandler(item, index) {
+      console.log(item, index)
+    }
+			},
+			mounted() {
+
+			}
+		});
+	</script>
+	</body>
+</html>

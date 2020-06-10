@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+		<meta charset="UTF-8">
+		<title>结算</title>
+		<script type="text/javascript" src="../js/main.js"></script>
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/flex.css"/>
+		<link rel="stylesheet" type="text/css" href="http://cdn.zljan.com/insurance/mobile/base/css/cube.css" />
+		<link rel="stylesheet" href="../css/global.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<script type="text/javascript" src="../js/common.js"></script>
+		<!--<script type="text/javascript" src="../js/wlogin_v20190614.js"></script>-->
+	</head>
+	<body class="bg_fff">
+		<div class="settlement" id="app">
+			 <cube-page type="tab-composite-view" title="tab-composite">
+    <div slot="content">
+      <cube-tab-bar v-model="selectedLabel"
+                    show-slider
+                    :use-transition="disabled"
+                    ref="tabNav"
+                    :data="tabLabels">
+      </cube-tab-bar>
+      <p class="gang_p"></p>
+      <div class="tab-slide-container">
+        <cube-slide
+          ref="slide"
+          :loop="loop"
+          :initial-index="initialIndex"
+          :auto-play="autoPlay"
+          :show-dots="showDots"
+          :options="slideOptions"
+          @scroll="scroll"
+          @change="changePage"
+        >
+          <!-- 全部 -->
+          <cube-slide-item>
+            <cube-scroll :data="followersData" :options="scrollOptions">
+            	<!--表格-->
+            	<div class="set_table">
+            		<div class="set_time_box"><p class="set_time center-lr-scatter" style="width: ;">
+            			<span style="color:#909399;"><i class="cubeic-calendar"  @click="showTimePicker"></i>&nbsp;{{choose_date}}</span>
+            			<span><span style="color: rgba(254,139,5,0.6);">推广费总计：&nbsp;</span>¥{{promotion_costs|addZero}}</span>
+            		</p></div>
+      				<p class="gang_p"></p>          		
+            		<table style="table-layout:fixed">
+            			<thead>
+            			<tr class="fs24">
+            				<td width="90">日期<p class="down_z"><i class="cubeic-pulldown fs28"></i></p></td>
+            				<td width="70">购买人</td>
+            				<td width="60">订单金额</td>
+            				<td width="90">推广费</td>
+            				<td></td>
+            				
+            			</tr>
+            			</thead>
+            			<tbody>
+            				<tr></tr>
+            			<tr v-for="(item1 , index) in tableDate_1" :key='index' class="fs28">
+            				<td  width="90">{{item1.date}}</td>
+            				<td width="70">{{item1.buyer}}</td>
+            				<td  width="60"><span>¥{{item1.order_amount|addZero}}</span></td>
+            				<td  width="90" style="color: rgba(254,139,5,0.6);">¥{{item1.promotion_fee|addZero}}</td>
+            				<td></td>
+            			</tr>
+            			
+            			</tbody>
+            		</table>
+            		<div class="text_center fs28 tb_btm">
+            			<p @click="onPullingUp(1)"  v-if="nowpage_1<page&&page!=1" style="border: 0;"><span class="table_btm">点击加载</span></p>
+            			<p v-if="page==nowpage_1&&page!=1"><span style="margin: 0 auto;" colspan="5">没有更多了</span></p>
+            		</div>
+            	</div>         	
+            </cube-scroll>
+
+            
+          </cube-slide-item>
+          <!-- 结算中 -->
+          <cube-slide-item>
+            <cube-scroll :data="recommendData" :options="scrollOptions">
+            	<div class="seting">
+            		<p class="center-lr-scatter"><span>当前结算周期</span><span>{{starttime}}~{{endtime}}</span></p>
+            		<p class="center-lr-scatter"><span>退保扣除</span><span>{{tb}}</span></p>
+            		<p class="center-lr-scatter"><span>结算总金额</span><span>¥{{all_money|addZero}}</span></p>
+            		<p class="center-lr-scatter"><span>推广费总计</span><span>¥{{promote_money|addZero}}</span></p>
+            	</div>
+             <p class="order_title">订单明细</p>
+             <div class="js_table">
+             	<table>
+             		<thead>
+            			<tr class="fs24">
+            				<td width="80">日期<p class="down_z"><i class="cubeic-pulldown fs28"></i></p></td>
+            				<td width="70">订单金额</td>
+            				<td width="50">比例</td>
+            				<td width="50">推广费</td>
+            				<td width="90">结算日期</td>
+            				<td></td>
+            				
+            			</tr>
+            			</thead>
+            			<tbody>
+            				<tr></tr>
+            			<tr v-for="(item1 , index) in tableDate_2" :key='index' class="fs24">
+            				<td  width="80">{{item1.date}}</td>
+            				<td  width="70"><span>¥{{item1.order_amount|addZero}}</span></td>
+            				<td width="50">{{item1.proportion}}%</td>
+            				
+            				<td  width="50" style="color: rgba(254,139,5,0.6);">¥{{item1.promotion_fee|addZero}}</td>
+            				<td  width="90">{{item1.endtime}}</td>
+            				
+            				<td></td>
+            			</tr>
+            			</tbody>
+             	</table>
+            		<div class="text_center fs28 tb_btm" style="margin-top: 20px; margin-bottom: 20px;">          			
+            			<p @click="onPullingUp(2)"  v-if="nowpage_2<page&&page!=1" ><span class="table_btm">点击加载</span></p>
+            			<p v-if="page==nowpage_2&&page!=1"><span style="margin: 0 auto;">没有更多了</span></p>           		
+            			</div>
+             </div>
+            </cube-scroll>
+          </cube-slide-item>
+          <!--结算记录-->
+          <cube-slide-item>
+            <cube-scroll :data="hotData" :options="scrollOptions" style='background-color: #F7F8FA;'>
+            	<div class="set_table">
+            		<table style="table-layout:fixed;background-color: #F7F8FA;">
+            			<thead>
+            			<tr class="fs24">
+            				<!--<td width="70">日期<p class="down_z"><i class="cubeic-pulldown fs28" @click="data_sort('tableDate_3')"></i></p></td>-->          				
+            				<td width="70">日期<p class="down_z"><i class="cubeic-pulldown fs28"></i></p></td>          				
+            				<td width="80">订单金额</td>
+            				<td width="70">结算状态</td>
+            				<td width="90">推广费总计</td>
+            				<td></td>
+            				
+            			</tr>
+            			</thead>
+            			<tbody>
+            				<tr></tr>
+            			<tr v-for="(item1 , index) in tableDate_3" :key='index' class="fs28">
+            				<td  width="70">{{item1.date}}</td>          				
+            				<td  width="80"><span>¥{{item1.order_amount|addZero}}</span></td>
+            				<td width="70"><button class="table_btn" v-bind:class="{end_bg:item1.state=='已结算',ongoing_bg:item1.state=='结算中'}">{{item1.state}}</button></td>
+            				<td  width="90" style="color: rgba(254,139,5,0.6);">¥{{item1.promotion_fee|addZero}}</td>
+            				<td></td>
+            			</tr>      			
+            			</tbody>
+            		</table>
+            		<div class="text_center fs28 tb_btm" style="margin-top: 20px; margin-bottom: 20px;">
+            			<p @click="onPullingUp(3)"  v-if="nowpage_3<page&&page!=1" style="border: 0;"><span class="table_btm">点击加载</span></p>
+            			<p v-if="page==nowpage_3&&page!=1"><span style="margin: 0 auto;">没有更多了</span></p>
+            		</div>
+            	</div>
+            </cube-scroll>
+          </cube-slide-item>
+        </cube-slide>
+      </div>
+    </div>
+  </cube-page>
+			</div>
+	</body>
+	<script>
+		Vue.filter('addZero',function(value){
+		return value.toFixed(2)
+		});
+		new Vue({
+			el: '#app',
+			data() {
+				return {
+					choose_date:'2020年 04月',	//选择的时间
+					promotion_costs:1234.00,	//推广总费用
+					page: 5,	//总共有几页
+					nowpage_1:1,	//全部当前页数,每页10条
+					nowpage_2:1,	//结算中当前页数
+					nowpage_3:1,	//结算记录当前页数
+					starttime:'2016-05-02',		//当前结算周期
+					tb:0,			//退保扣除
+					all_money:958.00,	//结算总金额
+					promote_money:945.00,	//推广费总计
+					endtime:'2016-05-08',	//结算日期
+					sort_px:false,	//排序
+					//全部页面的表数据
+					tableDate_1:[{date:'2016-05-02',buyer:'王五',order_amount:669.00,promotion_fee:100.00	},{date:'2016-05-02',buyer:'王五',order_amount:669.00,promotion_fee:100.00	},{date:'2016-05-02',buyer:'王五',order_amount:669.00,promotion_fee:100.00	},{date:'2016-05-02',buyer:'王五',order_amount:669.00,promotion_fee:100.00	},{date:'2016-05-02',buyer:'王五',order_amount:669.00,promotion_fee:100.00	},{date:'2016-05-02',buyer:'王五',order_amount:669.00,promotion_fee:100.00	},{date:'2016-05-02',buyer:'王五',order_amount:669.00,promotion_fee:100.00	},{date:'2016-05-02',buyer:'王五',order_amount:669.00,promotion_fee:100.00	},{date:'2016-05-01',buyer:'王五sssssssssssssss',order_amount:669.00,promotion_fee:100.00	},{date:'2016-05-03',buyer:'王五',order_amount:669.00,promotion_fee:100.00},],
+					//要添加的表
+					tableDate99:[{
+						date:'2016-05-02',
+						buyer:'王五',
+						order_amount:669.00,
+						promotion_fee:100.00						
+					},{
+						date:'2016-05-01',
+						buyer:'王五sssssssssssssss',
+						order_amount:669.00,
+						promotion_fee:100.00	
+					},{
+						date:'2016-05-03',
+						buyer:'王五',
+						order_amount:669.00,
+						promotion_fee:100.00	
+					},],
+					//结算中页面的表数据				
+					tableDate_2:[{
+						endtime:'2016-08-03',
+						date:'2016-05-02',
+						proportion:'15',
+						order_amount:669.00,
+						promotion_fee:100.00						
+					},{
+						date:'2016-05-01',
+						endtime:'2016-08-03',
+						proportion:'15',
+						order_amount:669.00,
+						promotion_fee:100.00	
+					},{
+						date:'2016-05-01',
+						endtime:'2016-08-03',
+						proportion:'15',
+						order_amount:669.00,
+						promotion_fee:100.00	
+					},{
+						date:'2016-05-01',
+						endtime:'2016-08-03',
+						proportion:'15',
+						order_amount:669.00,
+						promotion_fee:100.00	
+					},{
+						date:'2016-05-01',
+						endtime:'2016-08-03',
+						proportion:'15',
+						order_amount:669.00,
+						promotion_fee:100.00	
+					},{
+						date:'2016-05-01',
+						endtime:'2016-08-03',
+						proportion:'15',
+						order_amount:669.00,
+						promotion_fee:100.00	
+					},{
+						date:'2016-05-01',
+						endtime:'2016-08-03',
+						proportion:'15',
+						order_amount:669.00,
+						promotion_fee:100.00	
+					},{
+						date:'2016-05-01',
+						endtime:'2016-08-03',
+						proportion:'15',
+						order_amount:669.00,
+						promotion_fee:100.00	
+					},{
+						date:'2016-05-01',
+						endtime:'2016-08-03',
+						proportion:'15',
+						order_amount:669.00,
+						promotion_fee:100.00	
+					},{
+						date:'2016-05-03',
+						endtime:'2016-08-03',
+						proportion:'15',
+						order_amount:669.00,
+						promotion_fee:100.00	
+					},],
+					
+					//结算记录页面表数据
+					tableDate_3:[{date:'2016-03',state:'已结算',order_amount:12000.00,promotion_fee:100.00},{date:'2016-05',state:'结算中',order_amount:9488.00,promotion_fee:100.00},{date:'2016-05',state:'结算中',order_amount:9488.00,promotion_fee:100.00},{date:'2016-05',state:'结算中',order_amount:9488.00,promotion_fee:100.00},{date:'2016-05',state:'结算中',order_amount:9488.00,promotion_fee:100.00},{date:'2016-05',state:'结算中',order_amount:9488.00,promotion_fee:100.00},{date:'2016-05',state:'结算中',order_amount:9488.00,promotion_fee:100.00},{date:'2016-05',state:'结算中',order_amount:9488.00,promotion_fee:100.00},{date:'2016-05',state:'结算中',order_amount:9488.00,promotion_fee:100.00},{date:'2016-05',state:'结算中',order_amount:9488.00,promotion_fee:100.00},],
+					// 默认打开显示哪个页面
+					selectedLabel: '全部',
+			        disabled: false,	//是否开启 transition 过渡
+			        //tabLabels的title
+			        tabLabels: [{
+			          label: '全部'
+			        }, {
+			          label: '结算中'
+			        }, {
+			          label: '结算记录'
+			        }],
+			        loop: false,	//不循环
+			        autoPlay: false,	//不自动
+			        showDots: false,
+			        //slide绑定的属性
+			        slideOptions: {
+			          listenScroll: true,
+			          probeType: 3,
+			          /* 在水平和垂直滚动的同时锁定y方向 */
+			          directionLockThreshold: 0,
+			//         click: false
+			        },
+			        scrollOptions: {
+			          /* 在水平和垂直滚动的同时锁定x方向 */
+			          directionLockThreshold: 0,
+			           click: false
+			        },
+			        //3个label，即index下标
+			        followersData: 0,
+			        recommendData: 1,
+			        hotData: 2,
+							}
+						},
+			watch:{
+				
+			},
+			 computed: {
+			 	//下标
+			      initialIndex () {
+			        let index = 0
+			        index = this.findIndex(this.tabLabels, item => item.label === this.selectedLabel)
+			        return index
+			      },
+			      classObject:function(val){
+			      	return console.log(val)
+//				      return {
+//				        active: this.isActive && !this.error.value,
+//				        'text-danger': this.error.value && this.error.type === 'fatal',
+//				      }
+				  },
+			    },
+			methods: {
+				//选择时间函数
+				showTimePicker() {
+			      if (!this.dateTimePicker) {
+			        this.dateTimePicker = this.$createDatePicker({
+			          title: 'dateTimePicker',
+			          min: new Date(2008, 7),
+			          max: new Date(2020, 9),
+			          columnCount: 2,
+			          value: new Date(),
+			          onSelect: this.selectHandle,
+			          onCancel: this.cancelHandle
+			        })
+			      }
+			
+			      this.dateTimePicker.show()
+			    },
+			    //选择时间函数
+			     selectHandle(date, selectedVal, selectedText) {
+				      this.choose_date = date.getFullYear()+'年 '+("0" + (date.getMonth() + 1)).slice(-2)+'月';
+				    },
+				    //选择时间取消函数
+			    cancelHandle() {
+			      console.log("选择时间取消")
+			    },
+				//上拉函数
+				  onPullingUp(val) {
+				  	var that = this;
+				  	let s ='nowpage_'+val;
+				  	let tn = 'tableDate_'+val;
+				  	console.log(s)
+					that[s] += 1;
+					console.log(tn)
+				    // 模拟更新数据
+				    setTimeout(() => {
+				      if (that[s]<=that.page) {				   
+				        // 如果有新数据
+				        that[tn].push.apply(that[tn], that.tableDate99);
+				        console.log(that[tn],that[s])
+				      } else {
+				        // 如果没有新数据
+				        that[s] = 5;
+				        console.log('没了')
+				      }
+				    }, 0)
+				  },
+				//排序函数
+				data_sort(val){
+					this.sort_px = !this.sort_px;
+					console.log(this[val])
+					if(this.sort_px){
+					$('.down_z').css("transform","rotate(180deg)");					
+						this[val] = this[val].sort((a, b) => {return new Date(b.date).getTime() - new Date(a.date).getTime();})
+					}else{
+					$('.down_z').css("transform","rotate(0deg)");						
+						this[val] = this[val].sort((a, b) => {return new Date(a.date).getTime() - new Date(b.date).getTime();})						
+					}
+					console.log(this.sort_px)
+					
+				},
+				//找到当前和跳转index函数
+				findIndex:function(ary, fn) {
+				  if (ary.findIndex) {
+				    return ary.findIndex(fn)
+				  }
+				  /* istanbul ignore next */
+				  let index = -1
+				  /* istanbul ignore next */
+				  ary.some(function (item, i, ary) {
+				    const ret = fn.call(this, item, i, ary)
+				    if (ret) {
+				      index = i
+				      return ret
+				    }
+				  })
+				  /* istanbul ignore next */
+				  return index
+				},
+				//跳转方法
+			 	changePage (current) {
+			        this.selectedLabel = this.tabLabels[current].label			        
+			        console.log(current)
+			      },
+			      //移动效果函数
+			      scroll (pos) {
+			        const x = Math.abs(pos.x)		        
+			        const tabItemWidth = this.$refs.tabNav.$el.clientWidth
+			        const slideScrollerWidth = this.$refs.slide.slide.scrollerWidth
+			        const deltaX = (x / slideScrollerWidth * tabItemWidth)
+			        this.$refs.tabNav.setSliderTransform(deltaX)
+			      
+			        //排序归0
+			        this.sort_px = false;
+			        $('.down_z').css("transform","rotate(0deg)");
+//						this.tableDate_1 = this.tableDate_1.sort((a, b) => {return new Date(a.date).getTime() - new Date(b.date).getTime();})
+//						this.tableDate_2 = this.tableDate_2.sort((a, b) => {return new Date(a.date).getTime() - new Date(b.date).getTime();})
+	        
+			      },
+				login_submit(){
+					var that = this;
+					that.users.loadingShow=true;
+					setTimeout(function(){
+						that.users.loadingShow=false;
+						console.log("绑定成功");
+					},500)
+					
+				},
+		
+			},
+			mounted() {
+//				this.tableDate_1 = this.tableDate_1.sort((a, b) => {return new Date(a.date).getTime() - new Date(b.date).getTime();})
+			}
+		});
+
+	</script>
+</html>

@@ -1,0 +1,47 @@
+/*flex布局框架*/
+/*向左浮动+向上对齐+换行*/
+.left-float-topbr{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;flex-wrap:wrap;-webkit-flex-wrap:wrap;-ms-flex-wrap:wrap;line-height:1.4;}
+/*向左浮动+向上对齐+不换行*/
+.left-float-top{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;line-height:1.4;}
+/*居中浮动+向上对齐+不换行*/
+.center-float-top{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-justify-content:center;-moz-justify-content:center;-ms-justify-content:center;-o-justify-content:center;justify-content:center;line-height:1.4;}
+/*向右浮动+向上对齐+不换行*/
+.right-float-top{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-justify-content:flex-end;-moz-justify-content:flex-end;-ms-justify-content:flex-end;-o-justify-content:flex-end;justify-content:flex-end;line-height:1.4;}
+/*居中浮动+左对齐+不换行*/
+.center-float-left{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-align-items:center;-moz-align-items:center;-ms-align-items:center;-o-align-items:center;align-items:center;line-height:1.4;}
+/*居中浮动+居中对齐+不换行*/
+.center-float-center{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-justify-content:center;-moz-justify-content:center;-ms-justify-content:center;-o-justify-content:center;justify-content:center;-webkit-align-items:center;-moz-align-items:center;-ms-align-items:center;-o-align-items:center;align-items:center;line-height:1.4;}
+/*居中浮动+右对齐+不换行*/
+.center-float-right{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-justify-content:flex-end;-moz-justify-content:flex-end;-ms-justify-content:flex-end;-o-justify-content:flex-end;justify-content:flex-end;-webkit-align-items:center;-moz-align-items:center;-ms-align-items:center;-o-align-items:center;align-items:center;line-height:1.4;}
+/*向下浮动+向左对齐+不换行*/
+.bottom-float-left{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-align-items:flex-end;-moz-align-items:flex-end;-ms-align-items:flex-end;-o-align-items:flex-end;align-items:flex-end;line-height:1.4;}
+/*向下浮动+居中对齐+不换行*/
+.bottom-float-center{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-justify-content:center;-moz-justify-content:center;-ms-justify-content:center;-o-justify-content:center;justify-content:center;-webkit-align-items:flex-end;-moz-align-items:flex-end;-ms-align-items:flex-end;-o-align-items:flex-end;align-items:flex-end;line-height:1.4;}
+/*向下浮动+向右对齐+不换行*/
+.bottom-float-right{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-justify-content:flex-end;-moz-justify-content:flex-end;-ms-justify-content:flex-end;-o-justify-content:flex-end;justify-content:flex-end;-webkit-align-items:flex-end;-moz-align-items:flex-end;-ms-align-items:flex-end;-o-align-items:flex-end;align-items:flex-end;line-height:1.4;}
+/*向上左右分布*/
+.top-lr-scatter{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-justify-content:space-between;-moz-justify-content:space-between;-ms-justify-content:space-between;-o-justify-content:space-between;justify-content:space-between;line-height:1.4;}
+/*上下居中左右分布*/
+.tbc-lr-scatter{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-justify-content:space-around;-moz-justify-content:space-around;-ms-justify-content:space-around;-o-justify-content:space-around;justify-content:space-around;-webkit-align-items:center;-moz-align-items:center;-ms-align-items:center;-o-align-items:center;align-items:center;line-height:1.4;}
+/*向下左右分布*/
+.bottom-lr-scatter{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-align-items:flex-end;-moz-align-items:flex-end;-ms-align-items:flex-end;-o-align-items:flex-end;align-items:flex-end;-webkit-justify-content:space-between;-moz-justify-content:space-between;-ms-justify-content:space-between;-o-justify-content:space-between;justify-content:space-between;line-height:1.4;}
+/*向左上下分布*/
+.left-tb-scatter{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-flex-direction:column;
+  -moz-flex-direction:column;-ms-flex-direction:column;-o-flex-direction:column;flex-direction:column;-webkit-justify-content:space-between;
+  -moz-justify-content:space-between;-ms-justify-content:space-between;-o-justify-content:space-between;justify-content:space-between;line-height:1.4;}
+/*居中上下分布*/
+.center-tb-scatter{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-flex-direction:column;-moz-flex-direction:column;-ms-flex-direction:column;-o-flex-direction:column;flex-direction:column;-webkit-justify-content:space-between;-moz-justify-content:space-between;-ms-justify-content:space-between;-o-justify-content:space-between;justify-content:space-between;
+  -webkit-align-items:center;-moz-align-items:center;-ms-align-items:center;-o-align-items:center;align-items:center;line-height:1.4;}
+/*向右上下分布*/
+.right-tb-scatter{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-flex-direction:column;-moz-flex-direction:column;-ms-flex-direction:column;-o-flex-direction:column;flex-direction:column;-webkit-justify-content:space-between;-moz-justify-content:space-between;-ms-justify-content:space-between;-o-justify-content:space-between;justify-content:space-between;
+  -webkit-align-items:flex-end;-moz-align-items:flex-end;-ms-align-items:flex-end;-o-align-items:flex-end;align-items:flex-end;line-height:1.4;}
+/*上下居中中间分布*/
+.tbc-tb-scatter{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-flex-direction:column;-moz-flex-direction:column;-ms-flex-direction:column;-o-flex-direction:column;flex-direction:column;-webkit-justify-content:center;-moz-justify-content:center;-ms-justify-content:center;-o-justify-content:center;justify-content:center;line-height:1.4;}
+/*向左居中分布*/
+.left-lr-scatter{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-flex-direction:column;-moz-flex-direction:column;-ms-flex-direction:column;-o-flex-direction:column;flex-direction:column;-webkit-justify-content:center;-moz-justify-content:center;-ms-justify-content:center;-o-justify-content:center;justify-content:center;-webkit-flex-align-items:center;-moz-flex-align-items:center;-ms-flex-align-items:center;-o-flex-align-items:center;flex-align-items:center;line-height:1.4;}
+/*上下垂直居中左右分布*/
+.center-lr-scatter{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:-o-flex;display:flex;-webkit-justify-content:space-between;-moz-justify-content:space-between;-ms-justify-content:space-between;-o-justify-content:space-between;justify-content:space-between;line-height:1.4;align-items:center;align-content:center;}
+
+
+.flex-1{flex: 1; -moz-box-flex: 1; -ms-flex: 1; -webkit-flex: 1;}
+.flex-2{flex: 2; -moz-box-flex: 2; -ms-flex: 2; -webkit-flex: 2;}

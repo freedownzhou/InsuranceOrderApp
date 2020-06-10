@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+		<meta charset="UTF-8">
+		<title>设置</title>
+		<script type="text/javascript" src="../js/main.js"></script>
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/flex.css"/>
+		<link rel="stylesheet" type="text/css" href="http://cdn.zljan.com/insurance/mobile/base/css/cube.css" />
+		<link rel="stylesheet" href="../css/global.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<script type="text/javascript" src="../js/common.js"></script>
+		<!--<script type="text/javascript" src="../js/wlogin_v20190614.js"></script>-->
+	</head>
+	<body>
+		<div  id="app" class='usercenter'>		
+			<div class="usercenter_box" >
+				<div class="usercenter_titlebox">
+					<div class="title_font">
+						<p class="fs32 font_bold mb20">{{name}}</p>
+						<p class="fs20 color_txt_999 mb30 lh36">你已经成功登入，可以在这里使用查看等一系列功能。</p>
+						<button class="title_btn" @click="jump_titlebtn">去完善信息</button>
+					</div>
+					<img src="../img/v2_q7ogx0.png" class="title_img" style="" />
+				</div>
+				<div class="list">
+					<div class="list_box center-lr-scatter" @click="jump_content('账号和安全')">
+						<span>账号和安全</span>
+						<span class="fs24 color_txt_999">修改\忘记密码&nbsp;&nbsp;<i class="iconfont fs20">&#xe628;</i></span>
+					</div>
+				</div>
+				<div class="list">
+					<div class="list_box center-lr-scatter" @click="jump_content('实名认证')">
+						<span>实名认证</span>
+						<span class="fs24 color_txt_999" v-if="!realname">待完善信息&nbsp;&nbsp;<i class="iconfont fs20">&#xe628;</i></span>
+					</div>
+					<div class="list_box center-lr-scatter" @click="jump_content('贷款通知手机号')">
+						<span>贷款通知手机号</span>
+						<span class="fs24 color_txt_999">{{phone|Phonehidden}}&nbsp;&nbsp;<i class="iconfont fs20">&#xe628;</i></span>
+					</div>
+				</div>
+				<div class="list" @click="jump_content('账号和安全')">
+					<div class="list_box center-lr-scatter" @click="jump_content('支付设置')">
+						<span>支付设置</span>
+						<span class="fs24 color_txt_999"><i class="iconfont fs20">&#xe628;</i></span>
+					</div>
+					<div class="list_box center-lr-scatter" @click="jump_content('手机支付密码')">
+						<span>手机支付密码</span>
+						<span class="fs24 color_txt_999"><i class="iconfont fs20">&#xe628;</i></span>
+					</div>
+					<div class="list_box center-lr-scatter" @click="jump_content('授权管理')">
+						<span>授权管理</span>
+						<span class="fs24 color_txt_999"><i class="iconfont fs20">&#xe628;</i></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			//手机号隐藏中间
+			Vue.filter('Phonehidden',function(value){
+				let filterphone = value.substr(0, 3) + '****' + value.substr(7);
+			return  filterphone
+			});
+			new Vue({
+			el: '#app',
+			data() {
+				return {					
+					name:'王勇',
+					realname:false,
+					phone:'13975698695',
+				}
+			},
+			computed: {
+			
+			    },
+			methods:{	
+				jump_titlebtn(){
+					console.log('去完善信息')
+				},
+				//跳转方法
+				
+				jump_content(val){
+					console.log('跳转',val)
+				},
+
+
+			},
+			})
+		</script>
+	</body>
+</html>

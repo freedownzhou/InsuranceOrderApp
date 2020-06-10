@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+		<meta charset="UTF-8">
+		<title>产品详情</title>
+		<script type="text/javascript" src="../js/main.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="http://cdn.zljan.com/insurance/mobile/base/css/cube.css" />
+		<link rel="stylesheet" href="../css/global.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link rel="stylesheet" href="../css/flex.css" />
+		<script type="text/javascript" src="../js/common.js"></script>
+		<script type="text/javascript" src="http://cdn.zljan.com/insurance/mobile/base/js/swiper.min.js" charset="utf-8"></script>
+		
+		<!--<script type="text/javascript" src="../js/product-detail.js?v0719"></script>-->
+
+		
+		
+		<style>
+			.animated{
+				    animation-duration: .5s;
+				    animation-fill-mode: both;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<div>
+				<div class="container pb100">
+					<!-----banner------>
+					<div class="product_banner">
+						<div class="img_box">
+							<img width="100%" src="../img/v2_q7n4jc.png" />
+							<!--<p style="background: rgba(248,248,255,0.8);font-size: 0.24rem;height: 20px;line-height: 20px;padding-left: 0.2rem;position: absolute;bottom: 0px;z-index: 3;width: 100%;">本产品由雨点保提供</p>-->
+						
+
+						</div>
+						<div class="mask_layer"></div>
+					</div>
+					<div class="warp">
+						<!-------guarantee_plan-------->
+						<p style="background: #FFFFFF;font-size: 0.24rem;height: 20px;line-height: 20px;padding-left: 0.2rem;">本产品由雨点保提供</p>
+						
+						<div class="guarantee_plan bg_fff mb20">
+							<!--<div class="product_info tbc-lr-scatter">
+								<div class="product_title_jianjie"><p>投保年龄</p><p class="fs28 color_txt_101010 font_bold mt5">60天-90周岁</p><span class="shu_gang"></span></div>
+								<div class="product_title_jianjie"><p>保障期限</p><p class="fs28 color_txt_101010 font_bold mt5">1天-1年可选</p><span class="shu_gang"></span></div>
+								<div class="product_title_jianjie"><p>承保范围</p><p class="fs28 color_txt_101010 font_bold mt5">全国<span style="font-weight: 400;font-size:0.1rem;">（除港澳台）</span></p></div>
+							</div>-->
+							<!---tab-->
+							<div class="swiper-container bg_F4F7FC scheme-swiper" id="swiperScheme">
+							    <div class="swiper-wrapper pt40  tbc-lr-scatter">
+							        <div class="swiper-slide color_txt_5959" :class="{model_label_ctive:check_scheme_index == index}" v-for="(item,index) in schemeList" :key="index" @click="plan_change(item,index)">
+							        	<div class="plan_box ">											
+							        		<p class="fs28 center-float-center">¥&nbsp;<span class="fs55 font_bold"> {{item.money}}</span><span>&nbsp;起</span></p>
+											<p class="fs32">{{item.names}}</p>
+
+										</div>
+							        </div>
+								</div>
+							</div>
+							<!-- 计划保障责任 -->
+							<div class="plan_introduce_text pl25 pr25 block">
+								<div class="border_bottom pb20">
+									<div>
+										<div class="pt10 pb10 fs28" v-for="(item,index) in schemeList[check_scheme_index].safeguards" :key="index">
+
+											<div class="clearfix text_item relative">
+												<div class="pull_left clearfix width_80 lh36 color_txt_666">
+													{{item.title}}<i v-if="item.condition != null" @click="tip_pop_condition(item.title,item.condition)" class="iconfont fs32 ml10 icontips color_txt_999"></i>
+												</div>
+												<div class="pull_right width_20 text_right absolute_up_down font_bold">{{item.amount}}</div>
+											</div>
+										</div>
+									</div>
+									<a href="javascript:;" @click="to_safeguard_detail(product.product_id)" class="color_txt_479 fs28 lh48 block mt20">查看保障详情</a>
+								</div>
+							</div>
+							<div class="protocol_box clearfix pl30 pr30 pt30 pb15 lh48">
+								<p class="pull_left color_txt_A7A7A7 fs20">*以上信息仅供参考，详情信息以保险单及条款为准</p><br />
+								<p class="fs28" style="width: 100%;">特别提示
+									<a class="color_txt_479 fs28" href="">《投保须知》</a>
+									<a class="color_txt_479 fs28"  href="">《保险条款》</a>
+									<a class="color_txt_479 fs28" href="">《客户告知书》</a>
+								</p>
+								
+							</div>
+						</div>
+						<!----slide_nav----->
+						<div class="slide_nav">
+							<ul class="clearfix tbc-lr-scatter">
+								<li v-for="(item,index) in tabs.data" :key="index" :class="{theme_color_txt : tabs.check_tab_index == index}" @click="tab_change(index, item._id)">
+									<p>{{item.name}}</p>
+									<div class="line bg_4799ee"></div>
+								</li>
+							</ul>
+						</div>
+						<!-------img_introduce--------->
+						<div id="tab_0" class="img_introduce">
+							<img width="100%" src="../img/v2_q7n4ia.png" />
+						</div>
+						<!-----------理赔流程--------->
+						<div id="tab_1">
+							<div class="purchase_instructions bg_fff mt20">
+								<p class="plan_introduce_processfonttop">CLAIM PROCESS</p>
+								<p class="text_center fs28 mb15 font_bold plan_introduce_processfontbtm">理赔流程</p>
+								<ul class="pl30 pr30 pb30 ">
+									<li class="lh58 bg_F4F7FC fs28 color_txt_101010 pt20 width_100" v-for="(item,index) in schemeList[check_scheme_index].informations" :key="index"><p class="fs28 font_bold ml50">{{index+1}}. {{item.title}}</p><p class="fs24" style="padding-left:12%;box-sizing: border-box;position: relative;"><span>{{item.content}}</span>
+										<span class="li_xhx"></span></p></li>
+								</ul>
+							</div>
+						</div>
+						<!-----------常见问题----------->
+						<div id="tab_2">
+							<div class="claim_process bg_fff mt20" style="">
+								<p class="plan_introduce_processfonttop">QUESTION</p>
+								<p class="text_center fs28 mb15 font_bold plan_introduce_processfontbtm">常见问题</p>
+								<div class="question_i_box">
+									<div v-for="(item,index) in schemeList[check_scheme_index].issueList" class="mb60 relative" >
+										<p class="fs28 color_txt_101010"><span class="span_i">Q</span>{{item.question}}</p>
+										<p class="color_txt_A7A7A7 fs28 lh48 mt5"><span class="span_i mt5 bg" style="background: #FA4A48;">A</span><span class="font_answer">{{item.answer}}</span></p>
+										<span class="li_xhx"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					<!----------prd_fixed------------->
+					<div class="prd_fixed clearfix">
+						<div class="prd_fixed_left pull_left" @click>
+							<!--<i class="iconfont iconkefu theme_color_txt fs40 block mt15"></i>-->
+							<p><a href="tel:02163085900"></a><span></span>客服</span></p>
+						</div>
+						<cube-button  @click="trial_pop_show" class="prd_fixed_right pull_left">立即购买</cube-button>
+					</div>
+					<!-------model--------->
+					<div class="model_warp tck_model" :class="calculate.trial_pop_show?'block':'none'" >
+						<div class="model">
+							<div class="mask_layer"></div>
+							<div class="model_box">
+								<div class="model_header">
+									<p class="fs40">保费试算</p>
+									<p class="color_txt_666 lh36 mt10 fs24">请选择对应投保条件进行保费试算</p>
+									<i @click="close_tc" class="iconfont">&#xe606;</i>
+								</div>							
+									
+									<div class="model_content pb40 pl30 color_txt_666">
+									<div class="clearfix mt40">
+										<p class="pull_left mr30 title_txt">保障期间</p>
+										<div class="model_label pull_left model_label_ctive">终身</div>
+									</div>
+									<div class="clearfix mt50">
+										<p class="pull_left mr20 title_txt mt10">保险方案</p>
+										<div class="swiper-container pl10 pt10 pb10" id="swiperPopScheme">
+										    <div class="swiper-wrapper">
+										    	<div style="overflow-y: hidden;overflow-x: auto;white-space: nowrap;">
+										        <div class="swiper-slide model_label_plan"  v-for="(item,index) in schemeList" :class="check_scheme_index == index ? 'model_label_ctive':''" :key="index" @click="plan_change(item,index)">
+										        	{{item.vice_name}}
+										        </div>
+										        </div>
+											</div>
+										</div>
+									</div>
+									<div v-for="(item,index) in conditions" :key="index">
+										<div v-if="item.type == 'button'" class="clearfix mt50">
+											<p class="pull_left mr30 title_txt">{{item.title}}</p>
+											<div v-for="(item2,index2) in item.datas" :key="index2" 
+												:class="conditions[index].checked_index == item2.index ? 'model_label_ctive':''" 
+												@click="trial_button_change(item2, index)" 
+												class="model_label pull_left">
+												{{item2.text}}
+											</div>
+										</div>
+										<div v-if="item.type == 'select'" class="clearfix mt50 " @click="trial_select_change(item, index)">
+											<p class="pull_left title_txt">{{item.title}}</p>
+											<div class="pull_left lh56 seat_word clearfix ml40">
+												<p class="pull_left" :class="item.class_name">{{conditions[index].checked_text}}</p>
+												<i class="iconfont pull_right iconrightArrow"></i>
+											</div>
+										</div>
+										<div v-if="item.type == 'birthday'" class="clearfix mt50" @click="birth_show(item, index)">
+											<p class="pull_left title_txt">{{item.title}}</p>
+											<div class="pull_left lh56 chose_word clearfix ml40">
+												<p :class="'pull_left '+item.class_name">{{conditions[index].checked_text}}</p>
+												<i class="pull_right cubeic-arrow"></i>
+												
+											</div>
+										</div>
+										
+									</div>
+									<div class="clearfix mt50" @click="days_show()">
+											<p class="pull_left title_txt">交费期间</p>
+											<div class="pull_left lh56 chose_word clearfix ml40">
+												<p class="pull_left lh56 chose_word clearfix">{{days}}</p>
+												<i class="pull_right cubeic-arrow" style="position: relative;bottom: 0.55rem;"></i>
+											</div>																		
+										<div class="purchase_money color_txt_656 clearfix tc_purchase_money">
+											<p class="pull_left"><span class="ml20">¥&nbsp;</span><span class="color_txt_ffa fs40">{{settlement_money}}</span>&nbsp;元</p>
+											<cube-button @click="to_insurance" class="insure_btn  pull_left fs32">立即投保</cube-button>
+										</div>
+							
+						</div>
+					</div>
+				</div>
+				<!--model 保障说明弹框 -->
+				<!--<div class="tip_model color_txt_444 animated fadeIn" v-if="tip_pop.show">
+					<div class="tip_model_box relative">
+						<div class="tip_model_title fs40">{{tip_pop.title}}</div>
+						<div class="tip_model_content color_txt_666 fs32 lh56">
+							<p>{{tip_pop.content}}</p>
+							<div class="fadeAway"></div>
+						</div>
+						<i @click="tip_pop.show = false" class="iconfont iconchahao fs60"></i>
+					</div>
+				</div>-->
+				<!--end -->
+				<div class="side_edge_box">
+					<!-- <a class="btn_bg_fff mt20" href="javasrcipt:;" v-if="btnFlag"  @click="back_top"><i class="iconfont iconupArrow fs32"></i></a> -->
+				</div>
+			</div>
+		</div>
+		<script>
+			new Vue({
+			el: '#app',
+			data() {
+				return {	
+					days:'20年',			//选择的天数
+					check_scheme_id: '',		//选择的导航id
+					limit:'',	//保障期限
+					check_scheme_index: 0,		//选择的保险方案index
+					settlement_money:0,		//结算时的钱
+					swiperScheme:{},
+					swiperPopScheme:{},
+					 itemes: [
+					        {
+					          url: '',
+					          image: '../img/v2_q83msx.png'
+					        },
+					        {
+					          url: '',
+					          image: '../img/v2_q83msx.png'
+					        },
+					        {
+					          url: '',
+					          image: '../img/v2_q83msx.png'
+					        }
+					      ],
+					      //nav数据
+					      tabs: {
+								isCheck: false,
+								check_tab_index: 0,
+								data: [
+									{name: '产品详情', tag: 0, _id: 'tab_0'},
+									{name: '理赔流程', tag: 1, _id: 'tab_1'},
+									{name: '常见问题', tag: 2, _id: 'tab_2'},
+						
+								]
+							},
+							//model弹框
+							calculate: {
+								trial_pop_show: false
+					            /* plan: {key: 'plan', name: '保险方案'},
+					            periods: {key: 'periods', name: '保障期间'},
+					            payPeriod: {key: 'payPeriod', name: '交费期间'},
+					            amount: {key: 'amount', name: '保障额度'},
+					            socials: {key: 'socials', name: '有无社保'},
+					            gender: {key: 'gender', name: '性别'},
+					            scheme: {key: 'scheme', name: '项目列表'},
+					            age: {birth: undefined},
+					            trialClick: false */
+					        },
+					        //性别循环数据
+					        conditions: [
+					        {a: "a",
+								calculate_price: "y",
+								changed_calculate_price: "y",
+								checked_index: 0,
+								checked_text: "男",
+								checked_value: "1",
+								class_name: "trial_gender",
+								condition: "gender",
+								datas: [{index: 0,text: "男",value: "1"}	,{index: 1,text: "女",value: "2"}],
+								param_key: "gender",
+								title: "性    别",
+								type: "button"
+								},
+								{
+									b: "b",
+									calculate_price: "y",
+									changed_calculate_price: "y",
+									checked_index: 0,
+									checked_text: "选择出生日期",
+									checked_value: "-1",
+									class_name: "trial_birthday",
+									condition: "birthday",
+									datas: [{index: 0,
+											text: "选择出生日期",
+											value: "-1"}],
+									param_key: "num",
+									title: "出生日期",
+									type: "birthday",
+									verify: [{earliestAge: 29,
+												isAge: true,
+												maxAge: 51,
+												minAge: 13,
+												msg: "该产品方案被保人年龄须处于出生满30天（含）和50岁（含）之间"}]
+								},
+								{
+									earliestAge: 29,
+									isAge: true,
+									maxAge: 51,
+									minAge: 13,
+									msg: "该产品方案被保人年龄须处于出生满30天（含）和50岁（含）之间",
+								}
+					        ],
+					        	
+					        
+					      	//出行时间
+					      	timeValue: 0,
+					      	
+					      	//出行计划
+					      	planValue: 0,
+					      	t_options: [
+						        {
+						          value: 0,
+						          text: '自选日期'
+						        },
+						        {
+						          value: 1,
+						          text: '全年计划'
+						        }
+						      ],
+						      p_options: [
+						        {
+						          value: 0,
+						          text: '玛瑙计划'
+						        },
+						        {
+						          value: 1,
+						          text: '珍珠计划'
+						        },
+						        {
+						          value: 2,
+						          text: '钻石计划'
+						        }
+						      ],
+						      column1:[{ text: '3年', value: '3'},{ text: '5年', value: '5'},{ text: '10年', value: '10'},{ text: '15年', value: '15'},{ text: '20年', value: '20'},{ text: '25年', value: '25'},{ text: '30年', value: '30'},{ text: '交至60岁', value: '60'},{ text: '一次性交', value: '1'},],
+					      //产品数据
+						schemeList:[{
+									names:'玛瑙计划',	
+									money:65,
+									vice_name:'玛瑙计划',
+									//计划责任
+					      			safeguards:[{amount:'30万元',title: "意外身故及伤残"},{amount:'30万元',title: "自驾车意外身故及伤残"},{amount:'30万元',title: "医疗费用（含门诊和住院）"},{amount:'30万元',title: "紧急医疗运送和送返"},{amount:'√',title: "国外救助"}],
+					      			//理赔流程
+					      			informations:[{title:'报案',content:'拨打保险公司客服热线400-800-2020电话报案.'},{title:'准备材料',content:'根据客服指引收集好所有的理赔所需材料.'},{title:'审核材料',content:'保险公司理赔专员收到理赔材料后审核并裁定赔偿金.'},{title:'领取赔偿',content:'保险公司告知客户理赔决定，并支付赔偿金.'},],
+					      			//常见问题
+					      			issueList:[{question:'什么是旅行意外险？',answer:'由于范德萨江东父老sad接口来方剂啊受理代缴法拉盛快递费家阿斯蒂芬卡萨落地开发结束了'},{question:'什么是旅行意外险？',answer:'由于范德萨江东父老sad接口来方剂啊受理代缴法拉盛快递费家阿斯蒂芬卡萨落地开发结束了'},],
+									},
+									{
+									names:'珍珠计划',	
+									money:115,
+									vice_name:'珍珠计划',
+									
+									//计划责任
+					      			safeguards:[{amount:'30万元',title: "意外身故及伤残"},{amount:'30万元',title: "自驾车意外身故及伤残"},{amount:'30万元',title: "医疗费用（含门诊和住院）"},{amount:'30万元',title: "紧急医疗运送和送返"},{amount:'√',title: "国外救助"}],
+					      			informations:[{title:'报案',content:'拨打保险公司客服热线400-800-2020电话报案.'},{title:'准备材料',content:'根据客服指引收集好所有的理赔所需材料.'},{title:'审核材料',content:'保险公司理赔专员收到理赔材料后审核并裁定赔偿金.'},{title:'领取赔偿',content:'保险公司告知客户理赔决定，并支付赔偿金.'},],
+					      			//常见问题
+					      			issueList:[{question:'什么是旅行意外险？',answer:'由于范德萨江东父老sad接口来方剂啊受理代缴法拉盛快递费家阿斯蒂芬卡萨落地开发结束了'},{question:'什么是旅行意外险？',answer:'由于范德萨江东父老sad接口来方剂啊受理代缴法拉盛快递费家阿斯蒂芬卡萨落地开发结束了'},],
+									
+									},
+									{
+									names:'珍珠计划',	
+									vice_name:'珍珠计划',
+									
+									money:115,
+									//计划责任
+					      			safeguards:[{amount:'30万元',title: "自驾车意外身故及伤残"},{amount:'30万元',title: "医疗费用（含门诊和住院）"},{amount:'30万元',title: "紧急医疗运送和送返"},{amount:'√',title: "国外救助"}],					      
+					      			informations:[{title:'报案',content:'拨打保险公司客服热线400-800-2020电话报案.'},{title:'准备材料',content:'根据客服指引收集好所有的理赔所需材料.'},{title:'审核材料',content:'保险公司理赔专员收到理赔材料后审核并裁定赔偿金.'},{title:'领取赔偿',content:'保险公司告知客户理赔决定，并支付赔偿金.'},],
+									//常见问题
+					      			issueList:[{question:'什么是旅行意外险？',answer:'由于范德萨江东父老sad接口来方剂啊受理代缴法拉盛快递费家阿斯蒂芬卡萨落地开发结束了'},{question:'什么是旅行意外险？',answer:'由于范德萨江东父老sad接口来方剂啊受理代缴法拉盛快递费家阿斯蒂芬卡萨落地开发结束了'},],
+									
+									},
+									
+						]
+					}
+				
+			},
+			methods: {
+					trial_button_change: function(item, index){
+			
+							this.conditions_change(item, index);
+						},
+				//交费期间选择
+				days_show(){
+					
+			      if (!this.picker) {
+			        this.picker = this.$createPicker({
+			          title: '交费期间',
+			          data: [this.column1],
+			          onSelect: this.selectHandle,
+			          onCancel: this.cancelHandle
+			        })
+			      }
+			      this.picker.show()
+				},
+				 //选择时间函数
+			     selectHandle(date, selectedVal, selectedText) {
+				      this.days = date.getFullYear()+'年 '+("0" + (date.getMonth() + 1)).slice(-2)+'月';
+				    },
+						conditions_change: function (item, index) {
+							this.conditions[index].checked_index = item.index;
+							this.conditions[index].checked_value = item.value;
+							this.conditions[index].checked_text = item.text;
+//							objItem.ajax.calculate_price();
+						},
+				// 出生日期选择
+				birth_show: function (item, index) {
+					//this.trial_date_class = item.class_name;
+					//this.trial_date_key = item.param_key;
+					this.trial_date_index = index;
+		            if (!this.datePicker) {
+		              this.datePicker = this.$createDatePicker({
+		                title: item.default_txt,
+		                min: new Date(1950, 1, 1),
+		                max: new Date(),
+		                value: new Date(),
+		                onSelect: this.birth_confirm
+		              })
+		            }
+		            this.datePicker.show();
+		        },
+		        // 出生日期提交
+			        birth_confirm: function (date, selectedVal, selectedText) {
+			            //var chose_text = `${selectedText.join('-')}`;
+						var date_text = _bao_h5_tools.get_format_date(date)
+						var age = _bao_h5_tools.birth2Age(date);
+						var index = this.trial_date_index;
+						
+						this.conditions_change({'index':index,'value':age,'text':date_text}, index);
+			        },
+				//关闭弹出框函数
+				close_tc(){
+					this.calculate.trial_pop_show = false;
+					this.planValue = 0;
+					this.timeValue = 0;
+					this.days = '20年';
+				},
+				//弹出选择产品函数
+				choose_product(){
+					this.settlement_money = this.schemeList[this.planValue].money
+				},
+				//swiper函数
+						create_swiper: function (key) {
+							var _vue = this;
+							var obj = new Swiper('#'+key,{
+							    watchSlidesProgress : true,
+								watchSlidesVisibility : true,
+								observer:true,
+								observeParents:true,
+								initialSlide:0,
+								slidesPerView: 'auto'
+							});
+							_vue[key] = obj;
+						},
+				// 方案计划选择改变
+					plan_change: function (item, index) {
+//						this.scheme = item;
+//						this.check_scheme_calculate = item.calculate;
+//						this.check_scheme_conditions = item.conditions;
+						this.settlement_money = item.money;
+						this.check_scheme_id = item.scheme_id;
+						this.check_scheme_index = index;
+						this.planValue = index;
+//			            //this.calculate.plan.select = item;
+//			            if (index > 1) {
+//			            	this.swiperScheme.slideTo(index, 500, false);
+//			            	this.swiperPopScheme.slideTo(index, 500, false);
+//			            } else {
+//			            	this.swiperScheme.slideTo(0, 500, false);
+//			            	this.swiperPopScheme.slideTo(0, 500, false);
+//			            }
+//						objItem.ajax.calculate_price();
+			        },
+			        tab_change: function (index, _id) {
+						var _vue = this;
+						_vue.tabs.isCheck = true;
+						_vue.tabs.check_tab_index = index;
+						var _navH = $(".slide_nav").outerHeight(true);
+						var a_h = parseInt($('#' + _id).offset().top-_navH);
+						$('html,body').animate({'scrollTop': a_h}, function () {
+			                _vue.tabs.isCheck = false;
+			            });
+					},
+					//下拉改变标签颜色
+					tab_scroll_update: function () {
+			            var _vue = this;
+						if (_vue.tabs.isCheck) return;
+			            var scrollT = $(window).scrollTop();
+						var _navH = $(".slide_nav").outerHeight(true);
+			            $.each(_vue.tabs.data, function (i, o) {
+			                var $tabs = $('#tab_' + i);
+			                var maxOffset = $tabs.offset().top - scrollT + $tabs.height() - _navH;
+			                _vue.tabs.check_tab_index = i;
+			                if (maxOffset > 0) return false;
+			            });
+			        },
+			        // 试算保费弹框显示
+					trial_pop_show: function () {
+						console.log('打开了')
+						var _vue = this;
+						_vue.calculate.trial_pop_show = true;
+						_vue.init_calculate_price_param();
+			        },
+			        // 初始化试算价格参数
+					init_calculate_price_param: function () {
+//						objItem.ajax.calculate_price();
+					},
+    				// 去投保
+					to_insurance: function () {
+						var _vue = this;
+
+
+						setTimeout(function(){
+						console.log('投保事件')
+							_vue.calculate.trial_pop_show = false;
+						},500)
+//			            var _vue = this;
+//			            var scheme = _vue.scheme;
+//						var product = _vue.product;
+//						var insure_page = 'plan-insure';
+//						if (scheme.insure_page) {
+//							insure_page = scheme.insure_page;
+//						}
+//						if (_bao_h5_valid.url(insure_page)) {
+//							_bao_h5_common.openHref(insure_page);
+//						} else{
+//							var url = _bao_h5_browser.pageUrl(insure_page, {
+//								'itemId': objItem.variable.reqItemId,
+//								'planId': scheme.scheme_id 
+//							});
+//							if (product.health_told == 'y') {
+//								var url2 = _bao_h5_browser.pageUrl('notify/'+product.product_no+'_notify', {
+//									'redirect': _bao_h5_browser.encodeURI(url)
+//								});
+//								_bao_h5_common.openHref(url2);
+//							} else {
+//								_bao_h5_common.openHref(url);
+//							}
+//						}
+			            
+			        },
+			},
+			mounted() {
+				var _vue = this;
+				_vue.settlement_money = _vue.schemeList[0].money;		//初始化打开默认第一个产品总金额
+//				_vue.create_swiper('swiperScheme');
+//				_vue.create_swiper('swiperPopScheme');
+				console.log(_vue.swiperScheme.slideTo)
+				setTimeout(function(){
+					console.log(_vue.swiperScheme.slideTo)
+//					_vue.swiperScheme.slideTo(0, 0, false);
+//					_vue.swiperPopScheme.slideTo(0, 0, false);
+					$('#app').removeClass('none');
+				},500);
+				
+                this.$nextTick(function () {
+                    //objItem.vue.session_to_vue(_vue);
+                    $(window).scroll(function () {
+                        _vue.tab_scroll_update();
+                    });
+                    //_vue.init_insurance_select();
+                });				
+			}
+		});
+		</script>
+	</body>
+</html>
